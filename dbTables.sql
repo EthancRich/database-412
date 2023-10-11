@@ -8,7 +8,6 @@
 -- \dt
 
 -- Now, this was just a testing script. You can just use the following command to get rid the testing table
--- DROP TABLE car;
 
 CREATE TABLE User (
     user_id INT NOT NULL,
@@ -30,12 +29,27 @@ CREATE TABLE UserProject (
     PRIMARY KEY (user_id, project_name, sponsor)
 );
 
+CREATE TABLE Equipment (
+    equip_id INT NOT NULL,
+    serial_number VARCHAR(255),
+    product_name VARCHAR(255),
+    manufacturer VARCHAR(255),
+    label VARCHAR(255),                         --what does the label mean
+    category VARCHAR(255)                       --do we want to abstract this to an int that represents each category? What are the categories
+    purchase_date DATE,
+    comments VARCHAR(1023),
+    `status` VARCHAR(1023),                     --What pre-defined statuses do we want
+    condition VARCHAR(255),                     --What pre-defined conditions do we want
+    PRIMARY KEY (equip_id)
+);
+
 CREATE TABLE Transaction (
     trans_id INT NOT NULL,
     checkout_datetime DATETIME,
     expected_return_datetime DATETIME,
     actual_return_datetime DATETIME,
     comments VARCHAR(1023),
+    equipment_items INT[],                      --array of equip_id's
     user_id INT NOT NULL REFERENCES User(user_id)
     PRIMARY KEY (trans_id) 
 );
