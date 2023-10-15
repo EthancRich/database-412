@@ -5,7 +5,7 @@ A placeholder README for the database project for CSE 412.
 Danny, Aaron, Neha, Ethan
 
 ## Introduction
-Here's an introduction to our project, once we found out what it will be.
+Here's a placeholder introduction to our project.
 
 ## Notes on getting the install to work
 You need psycopg2
@@ -17,5 +17,8 @@ installed libpq-dev with the correct python version and it was all good
 
 ## Setting up the local environment
 
-I created a new database called "inventory", this is where the info will be stored locally on my computer. It's hosted on the same server that we made for the class
-`createdb inventory`
+Make sure that your local database server is running with the following command:
+`pg_ctl -D PATH/TO/YOUR/DBSERVERFILE -o '-k /tmp' start`
+For students in CSE412, this database server folder is `db412`.
+
+Run the reset_database.sh bash script. This will remove the current 'inventory' database if it exists, then create a new version and populate it with the contents of the dbTables.sql script.

@@ -1,5 +1,4 @@
 import psycopg2
-import os
 import sys
 
 # Before running this script, make sure you've started the database server on your computer

@@ -1,31 +1,28 @@
--- You can run an SQL scripts. First log into the database you want to run the script on
+-- This script creates the tables of our database and inserts a dummy data row for each table.
+-- running reset_database.sh will update your local database called 'inventory' by deleting it and remaking it with this script.
+
+-- You can interact with this tables by entering the database with the following command from your CLI:
 -- psql -d inventory
 
--- once in the database, run the script by using the \i command
--- \i dbTables.sql
-
--- You can view all tables in the current database by using a command in the psql shell
--- \dt
-
-CREATE TABLE "user" (
-    user_id INT NOT NULL,
-    user_name VARCHAR(255) NOT NULL,
-    PRIMARY KEY (user_id)
+CREATE TABLE Users (
+    users_id INT NOT NULL,                        -- ASURITE? or just an internal id?
+    users_name VARCHAR(255) NOT NULL,
+    PRIMARY KEY (users_id)
 );
 
 CREATE TABLE Project (
-    sponsor VARCHAR(255) NOT NULL,
     project_name VARCHAR(255) NOT NULL,
-    PRIMARY KEY (sponsor, project_name)
+    sponsor VARCHAR(255) NOT NULL,
+    PRIMARY KEY (project_name, sponsor)
 );
 
-CREATE TABLE UserProject (
-    user_id INT NOT NULL, 
+CREATE TABLE UsersProject (
+    users_id INT NOT NULL, 
     project_name VARCHAR(255) NOT NULL,
     sponsor VARCHAR(255) NOT NULL,
     is_team_lead BOOLEAN,
-    PRIMARY KEY (user_id, project_name, sponsor),
-    FOREIGN KEY (user_id) REFERENCES "user" (user_id),
+    PRIMARY KEY (users_id, project_name, sponsor),
+    FOREIGN KEY (users_id) REFERENCES Users (users_id),
     FOREIGN KEY (project_name, sponsor) REFERENCES Project (project_name, sponsor)
 );
 
@@ -50,6 +47,21 @@ CREATE TABLE Transaction (
     actual_return_date DATE,
     comments VARCHAR(1023),
     equipment_items INT[],                      --array of equip_id's
-    user_id INT NOT NULL REFERENCES "user" (user_id),
+    users_id INT NOT NULL REFERENCES Users (users_id),
     PRIMARY KEY (trans_id) 
 );
+
+INSERT INTO Users (users_id, users_name) 
+VALUES (1000, 'Jane Doe');
+
+INSERT INTO Project (project_name, sponsor)
+VALUES ('Janes Team', 'State Farm');
+
+INSERT INTO UsersProject (users_id, project_name, sponsor, is_team_lead)
+VALUES (1000, 'Janes Team', 'State Farm', TRUE);
+
+INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
+VALUES (8877, 'XY234', 'VR Headset', 'Meta', 'None', 'AR/VR', '2022-11-23', NULL, 'checked out', 'New');
+
+INSERT INTO Transaction (trans_id, checkout_date, expected_return_date, actual_return_date, comments, equipment_items, users_id)
+VALUES (1, '2023-03-12', '2023-05-11', NULL, NULL, '{8877}', 1000);
