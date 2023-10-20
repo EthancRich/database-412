@@ -53,11 +53,12 @@ CREATE TABLE Transaction (
 
 CREATE TABLE MobileDevice(
     equip_id INT NOT NULL,
-    type VARCHAR(255),
+    mobile_type VARCHAR(255),
     chipset VARCHAR(255),
     operating_system VARCHAR(255),
     ram VARCHAR(255),          
-    storage VARCHAR(255),      
+    storage VARCHAR(255),
+    ip_address VARCHAR(45),             --ipv6 is 45 characters and ipv4 is 15 characters
     PRIMARY KEY (equip_id),
     FOREIGN KEY (equip_id) REFERENCES Equipment (equip_id)
 );
@@ -108,12 +109,6 @@ CREATE TABLE VRARDevice (
     FOREIGN KEY (equip_id) REFERENCES Equipment(equip_id)
 );
 
-CREATE TABLE MISC (
-    equip_id INT NOT NULL,
-    PRIMARY KEY (equip_id), 
-    FOREIGN KEY (equip_id) REFERENCES Equipment(equip_id)
-);
-
 INSERT INTO Users (users_id, users_name) 
 VALUES ('jadoe1', 'Jane Doe');
 
@@ -124,26 +119,31 @@ INSERT INTO UsersProject (users_id, project_name, sponsor, is_team_lead)
 VALUES ('jadoe1', 'Janes Team', 'State Farm', TRUE);
 
 INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
-VALUES (8877, 'XY234', 'VR Headset', 'Meta', 'None', 'AR/VR', '2022-11-23', NULL, 'checked out', 'New');
+VALUES (8877, 'XY234', 'VR Headset', 'Meta', 'None', 'VRARDevice', '2022-11-23', NULL, 'checked out', 'New');
+INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
+VALUES (1234, 'ZZ123', 'iPhone 14', 'Apple', 'None', 'MobileDevice', '2022-11-23', NULL, 'checked out', 'New');
+INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
+VALUES (2456, 'A1B2C3', 'aCameraName', 'Canon', 'None', 'Camera', '2022-11-23', NULL, 'checked out', 'New');
+INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
+VALUES (4563, '3216AC', 'Raspberry Pi 4', 'Raspberry Pi', 'None', 'FPGADeviceBoard', '2022-11-23', NULL, 'checked out', 'New');
+INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
+VALUES (3333, '980ASQ', 'Omen 15', 'HP', 'None', 'Computer', '2022-11-23', NULL, 'checked out', 'New');
 
 INSERT INTO Transaction (trans_id, checkout_date, expected_return_date, actual_return_date, comments, equipment_items, users_id)
 VALUES (1, '2023-03-12', '2023-05-11', NULL, NULL, '{8877}', 'jadoe1');
 
-INSERT INTO MobileDevice (equip_id, type, chipset, operating_system, ram, storage, ip_address)
+INSERT INTO MobileDevice (equip_id, mobile_type, chipset, operating_system, ram, storage, ip_address)
 VALUES (1234, 'Smartphone', 'ChipA', 'OS A', '8GB', '128GB', '192.168.1.1');
 
-INSERT INTO Camera (equip_id, type, resolution, megapixels, sd_card)
+INSERT INTO Camera (equip_id, camera_type, resolution, megapixels, sd_card)
 VALUES (2456, 'DSLR', '4K', 20, '32GB');
 
-INSERT INTO FPGADeviceBoard (equip_id, type, storage)
-VALUES (4563, 'TypeA', '16GB');
+INSERT INTO FPGADeviceBoard (equip_id, board_type, storage)
+VALUES (4563, 'Microcontroller', '16GB');
 
 INSERT INTO VRARDevice (equip_id, storage)
-VALUES (5241, '128GB');
+VALUES (8877, '128GB');
 
-INSERT INTO MISC (equip_id, description) --is this right!?
-VALUES (6244);
-
-INSERT INTO Computer (equip_id, Type, CPU, GPU, RAM, Storage, Operating_System, Hostname, IP_Address, Local_Admin) 
-VALUES (3333, 'Laptop', 'Intel i7-11800H', 'NVIDIA RTX 3050 Ti', '32GB', '1TB SSD', 'Windows 11', 'DELL-XPS-USER', '192.168.1.11', 'admin');
+INSERT INTO Computer (equip_id, computer_type, CPU, GPU, RAM, Storage, Operating_System, Hostname, IP_Address, Local_Admin) 
+VALUES (3333, 'Laptop', 'Intel i7-11800H', 'NVIDIA RTX 3050 Ti', '32GB', '1TB SSD', 'Windows 11', 'HP-XPS-USER', '192.168.1.11', 'admin');
 
