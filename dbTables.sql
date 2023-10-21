@@ -110,42 +110,45 @@ CREATE TABLE VRARDevice (
 );
 
 -- Replace all below with downloaded data in this branch
+-- Another example I saw if this one doesnt work: COPY persons(first_name, last_name, dob, email) FROM 'C:\sampledb\persons.csv' DELIMITER ',' CSV HEADER;
+-- Path will have to change for each person
 
-INSERT INTO Users (users_id, users_name) 
-VALUES ('jadoe1', 'Jane Doe');
+COPY Users(users_id, users_name)
+    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - Users.csv'
+    WITH (FORMAT csv);
 
-INSERT INTO Project (project_name, sponsor)
-VALUES ('Janes Team', 'State Farm');
+COPY Project(project_name, sponsor)
+    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - Project.csv'
+    WITH (FORMAT csv);
 
-INSERT INTO UsersProject (users_id, project_name, sponsor, is_team_lead)
-VALUES ('jadoe1', 'Janes Team', 'State Farm', TRUE);
+COPY UsersProject(users_id, project_name, sponsor, is_team_lead)
+    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - UsersProject.csv'
+    WITH (FORMAT csv);
 
-INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
-VALUES (8877, 'XY234', 'VR Headset', 'Meta', 'None', 'VRARDevice', '2022-11-23', NULL, 'checked out', 'New');
-INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
-VALUES (1234, 'ZZ123', 'iPhone 14', 'Apple', 'None', 'MobileDevice', '2022-11-23', NULL, 'checked out', 'New');
-INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
-VALUES (2456, 'A1B2C3', 'aCameraName', 'Canon', 'None', 'Camera', '2022-11-23', NULL, 'checked out', 'New');
-INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
-VALUES (4563, '3216AC', 'Raspberry Pi 4', 'Raspberry Pi', 'None', 'FPGADeviceBoard', '2022-11-23', NULL, 'checked out', 'New');
-INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
-VALUES (3333, '980ASQ', 'Omen 15', 'HP', 'None', 'Computer', '2022-11-23', NULL, 'checked out', 'New');
+COPY Equipment(equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, status, condition)
+    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - Equipment.csv'
+    WITH (FORMAT csv);
 
-INSERT INTO Transaction (trans_id, checkout_date, expected_return_date, actual_return_date, comments, equipment_items, users_id)
-VALUES (1, '2023-03-12', '2023-05-11', NULL, NULL, '{8877}', 'jadoe1');
+COPY Transaction(trans_id, users_id, expected_return_date, actual_return_date, comments, equipment_items)
+    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - Transaction.csv'
+    WITH (FORMAT csv);
 
-INSERT INTO MobileDevice (equip_id, mobile_type, chipset, operating_system, ram, storage, ip_address)
-VALUES (1234, 'Smartphone', 'ChipA', 'OS A', '8GB', '128GB', '192.168.1.1');
+COPY MobileDevice(equip_id, mobile_type, operating_system, ram, storage, ip_address)
+    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - MobileDevice.csv'
+    WITH (FORMAT csv);
 
-INSERT INTO Camera (equip_id, camera_type, resolution, megapixels, sd_card)
-VALUES (2456, 'DSLR', '4K', 20, '32GB');
+COPY Camera(equip_id, camera_type, resolution, megapixels, sd_card)
+    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - Camera.csv'
+    WITH (FORMAT csv);
 
-INSERT INTO FPGADeviceBoard (equip_id, board_type, storage)
-VALUES (4563, 'Microcontroller', '16GB');
+COPY Computer(equip_id, computer_type, cpu, gpu, ram, storage, hostname, operating_system, local_admin, ip_address)
+    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - Computer.csv'
+    WITH (FORMAT csv);
 
-INSERT INTO VRARDevice (equip_id, storage)
-VALUES (8877, '128GB');
+COPY FPGADeviceBoard(equip_id, board_type, storage)
+    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - FPGADeviceBoard.csv'
+    WITH (FORMAT csv);
 
-INSERT INTO Computer (equip_id, computer_type, CPU, GPU, RAM, Storage, Operating_System, Hostname, IP_Address, Local_Admin) 
-VALUES (3333, 'Laptop', 'Intel i7-11800H', 'NVIDIA RTX 3050 Ti', '32GB', '1TB SSD', 'Windows 11', 'HP-XPS-USER', '192.168.1.11', 'admin');
-
+COPY VRARDevice(equip_id, storage)
+    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - VRARDevice.csv'
+    WITH (FORMAT csv);
