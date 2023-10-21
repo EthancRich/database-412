@@ -109,46 +109,46 @@ CREATE TABLE VRARDevice (
     FOREIGN KEY (equip_id) REFERENCES Equipment(equip_id)
 );
 
--- Replace all below with downloaded data in this branch
+-- COPY tables from CSV files
 -- Another example I saw if this one doesnt work: COPY persons(first_name, last_name, dob, email) FROM 'C:\sampledb\persons.csv' DELIMITER ',' CSV HEADER;
--- Path will have to change for each person
+-- Path matches the Github folder path
 
 COPY Users(users_id, users_name)
-    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - Users.csv'
+    FROM 'database-412/CSVFiles/Users.csv'
     WITH (FORMAT csv);
 
 COPY Project(project_name, sponsor)
-    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - Project.csv'
+    FROM 'database-412/CSVFiles/Project.csv'
     WITH (FORMAT csv);
 
 COPY UsersProject(users_id, project_name, sponsor, is_team_lead)
-    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - UsersProject.csv'
+    FROM 'database-412/CSVFiles/UsersProject.csv'
     WITH (FORMAT csv);
 
 COPY Equipment(equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, status, condition)
-    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - Equipment.csv'
+    FROM 'database-412/CSVFiles/Equipment.csv'
     WITH (FORMAT csv);
 
 COPY Transaction(trans_id, users_id, expected_return_date, actual_return_date, comments, equipment_items)
-    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - Transaction.csv'
+    FROM 'database-412/CSVFiles/Transaction.csv'
     WITH (FORMAT csv);
 
 COPY MobileDevice(equip_id, mobile_type, operating_system, ram, storage, ip_address)
-    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - MobileDevice.csv'
+    FROM 'database-412/CSVFiles/MobileDevice.csv'
     WITH (FORMAT csv);
 
 COPY Camera(equip_id, camera_type, resolution, megapixels, sd_card)
-    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - Camera.csv'
+    FROM 'database-412/CSVFiles/Camera.csv'
     WITH (FORMAT csv);
 
 COPY Computer(equip_id, computer_type, cpu, gpu, ram, storage, hostname, operating_system, local_admin, ip_address)
-    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - Computer.csv'
+    FROM 'database-412/CSVFiles/Computer.csv'
     WITH (FORMAT csv);
 
 COPY FPGADeviceBoard(equip_id, board_type, storage)
-    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - FPGADeviceBoard.csv'
+    FROM 'database-412/CSVFiles/FPGADeviceBoard.csv'
     WITH (FORMAT csv);
 
 COPY VRARDevice(equip_id, storage)
-    FROM '/Users/michaelantar/Desktop/School/CSE412/DB CSV FILES/Data for Database - VRARDevice.csv'
+    FROM 'database-412/CSVFiles/VRARDevice.csv'
     WITH (FORMAT csv);
