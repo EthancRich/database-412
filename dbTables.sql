@@ -109,47 +109,46 @@ CREATE TABLE VRARDevice (
     FOREIGN KEY (equip_id) REFERENCES Equipment(equip_id)
 );
 
+-- COPY tables from CSV files
+-- Another example I saw if this one doesnt work: COPY persons(first_name, last_name, dob, email) FROM 'C:\sampledb\persons.csv' DELIMITER ',' CSV HEADER;
+-- Path matches the Github folder path
 
+COPY Users(users_id, users_name)
+    FROM 'database-412/CSVFiles/Users.csv'
+    WITH (FORMAT csv);
 
+COPY Project(project_name, sponsor)
+    FROM 'database-412/CSVFiles/Project.csv'
+    WITH (FORMAT csv);
 
+COPY UsersProject(users_id, project_name, sponsor, is_team_lead)
+    FROM 'database-412/CSVFiles/UsersProject.csv'
+    WITH (FORMAT csv);
 
--- Replace all below with downloaded data in this branch
+COPY Equipment(equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, status, condition)
+    FROM 'database-412/CSVFiles/Equipment.csv'
+    WITH (FORMAT csv);
 
-INSERT INTO Users (users_id, users_name) 
-VALUES ('jadoe1', 'Jane Doe');
+COPY Transaction(trans_id, users_id, expected_return_date, actual_return_date, comments, equipment_items)
+    FROM 'database-412/CSVFiles/Transaction.csv'
+    WITH (FORMAT csv);
 
-INSERT INTO Project (project_name, sponsor)
-VALUES ('Janes Team', 'State Farm');
+COPY MobileDevice(equip_id, mobile_type, operating_system, ram, storage, ip_address)
+    FROM 'database-412/CSVFiles/MobileDevice.csv'
+    WITH (FORMAT csv);
 
-INSERT INTO UsersProject (users_id, project_name, sponsor, is_team_lead)
-VALUES ('jadoe1', 'Janes Team', 'State Farm', TRUE);
+COPY Camera(equip_id, camera_type, resolution, megapixels, sd_card)
+    FROM 'database-412/CSVFiles/Camera.csv'
+    WITH (FORMAT csv);
 
-INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
-VALUES (8877, 'XY234', 'VR Headset', 'Meta', 'None', 'VRARDevice', '2022-11-23', NULL, 'checked out', 'New');
-INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
-VALUES (1234, 'ZZ123', 'iPhone 14', 'Apple', 'None', 'MobileDevice', '2022-11-23', NULL, 'checked out', 'New');
-INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
-VALUES (2456, 'A1B2C3', 'aCameraName', 'Canon', 'None', 'Camera', '2022-11-23', NULL, 'checked out', 'New');
-INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
-VALUES (4563, '3216AC', 'Raspberry Pi 4', 'Raspberry Pi', 'None', 'FPGADeviceBoard', '2022-11-23', NULL, 'checked out', 'New');
-INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
-VALUES (3333, '980ASQ', 'Omen 15', 'HP', 'None', 'Computer', '2022-11-23', NULL, 'checked out', 'New');
+COPY Computer(equip_id, computer_type, cpu, gpu, ram, storage, hostname, operating_system, local_admin, ip_address)
+    FROM 'database-412/CSVFiles/Computer.csv'
+    WITH (FORMAT csv);
 
-INSERT INTO Transaction (trans_id, checkout_date, expected_return_date, actual_return_date, comments, equipment_items, users_id)
-VALUES (1, '2023-03-12', '2023-05-11', NULL, NULL, '{8877}', 'jadoe1');
+COPY FPGADeviceBoard(equip_id, board_type, storage)
+    FROM 'database-412/CSVFiles/FPGADeviceBoard.csv'
+    WITH (FORMAT csv);
 
-INSERT INTO MobileDevice (equip_id, mobile_type, chipset, operating_system, ram, storage, ip_address)
-VALUES (1234, 'Smartphone', 'ChipA', 'OS A', '8GB', '128GB', '192.168.1.1');
-
-INSERT INTO Camera (equip_id, camera_type, resolution, megapixels, sd_card)
-VALUES (2456, 'DSLR', '4K', 20, '32GB');
-
-INSERT INTO FPGADeviceBoard (equip_id, board_type, storage)
-VALUES (4563, 'Microcontroller', '16GB');
-
-INSERT INTO VRARDevice (equip_id, storage)
-VALUES (8877, '128GB');
-
-INSERT INTO Computer (equip_id, computer_type, CPU, GPU, RAM, Storage, Operating_System, Hostname, IP_Address, Local_Admin) 
-VALUES (3333, 'Laptop', 'Intel i7-11800H', 'NVIDIA RTX 3050 Ti', '32GB', '1TB SSD', 'Windows 11', 'HP-XPS-USER', '192.168.1.11', 'admin');
-
+COPY VRARDevice(equip_id, storage)
+    FROM 'database-412/CSVFiles/VRARDevice.csv'
+    WITH (FORMAT csv);

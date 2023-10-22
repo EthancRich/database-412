@@ -1,0 +1,56 @@
+equip_id,serial_number,product_name,manufacturer,label,category,purchase_date,comments,status,condition
+1,MD001,iPhone 12,Apple,MD01,Mobile Devices,2021-05-15,Used as a test device,Unavailable,Excellent
+2,MD002,Samsung Galaxy S21,Samsung,MD02,Mobile Devices,2021-06-10,Minor screen scratches,Unavailable,Good
+3,MD003,Google Pixel 5,Google,MD03,Mobile Devices,2021-03-20,"Frequent use, still in good condition",Unavailable,Very Good
+4,MD004,OnePlus 9 Pro,OnePlus,MD04,Mobile Devices,2021-07-05,"Excellent performance, well-maintained",Unavailable,Excellent
+5,MD005,Xiaomi Mi 11,Xiaomi,MD05,Mobile Devices,2020-12-12,"Rarely used, like new",Unavailable,Like New
+6,CAM001,Canon EOS 5D Mark IV,Canon,CAM01,Camera,2021-04-28,High-quality DSLR for photography projects,Unavailable,Excellent
+7,CAM002,Sony Alpha A7 III,Sony,CAM02,Camera,2020-11-03,Includes multiple lenses,Unavailable,Very Good
+8,CAM003,Nikon D850,Nikon,CAM03,Camera,2019-09-22,"Professional-grade DSLR, rarely used",Unavailable,Excellent
+9,COM001,Dell XPS 15,Dell,COM01,Computer,2019-12-30,Used for software development,Unavailable,Good
+10,COM002,MacBook Pro 13-inch,Apple,COM02,Computer,2021-08-17,"Upgraded RAM, excellent for research",Unavailable,Excellent
+11,FPGA001,Xilinx Artix-7,Xilinx,FPGA01,FPGA Board,2021-07-20,FPGA development board,Unavailable,Excellent
+12,FPGA002,Altera Cyclone IV,Intel (Altera),FPGA02,FPGA Board,2021-09-05,Custom FPGA configurations,Unavailable,Good
+13,VR001,Oculus Rift S,Oculus,VR01,VR/AR Device,2021-10-25,Used for virtual reality experiments,Unavailable,Very Good
+14,VR002,HTC Vive Pro,HTC,VR02,VR/AR Device,2021-06-28,High-quality VR headset,Unavailable,Excellent
+15,VR003,Valve Index,Valve,VR03,VR/AR Device,2021-11-30,Includes finger-tracking controllers,Available,Excellent
+16,MIS001,Raspberry Pi 4,Raspberry Pi,MIS01,Miscellaneous,2021-03-10,Used for various DIY projects,Available,Good
+17,MIS002,3D Printer,Prusa Research,MIS02,Miscellaneous,2019-10-08,Prototyping and rapid fabrication,Available,Very Good
+18,MIS003,Raspberry Pi Zero W,Raspberry Pi,MIS03,Miscellaneous,2020-02-20,Compact board for IoT experiments,Available,Excellent
+19,MD006,OnePlus Nord N200,OnePlus,MD06,Mobile Devices,2021-06-03,Spare test device,Unavailable,Very Good
+20,CAM004,Fujifilm X-T4,Fujifilm,CAM04,Camera,2021-09-14,Mirrorless camera for photography,Unavailable,Excellent
+21,COM003,Lenovo ThinkPad X1 Carbon,Lenovo,COM03,Computer,2020-09-14,Lightweight laptop for research,Unavailable,Very Good
+22,FPGA003,Intel Stratix 10 GX,Intel,FPGA03,FPGA Board,2021-11-22,High-performance FPGA board,Available,Excellent
+23,VR004,Oculus Quest 2,Oculus,VR04,VR/AR Device,2021-04-15,Ideal for wireless VR experiences,Available,Excellent
+24,MIS004,Arduino Uno,Arduino,MIS04,Miscellaneous,2020-06-01,Used for various electronic projects,Available,Good
+25,MD007,iPhone SE (2nd Gen),Apple,MD07,Mobile Devices,2021-02-10,Compact test device,Available,Very Good
+26,CAM005,Sony Cyber-shot RX100 VII,Sony,CAM05,Camera,2020-12-05,High-quality compact camera,Available,Excellent
+27,COM004,HP Pavilion Gaming Laptop,HP,COM04,Computer,2021-05-20,Gaming laptop for VR development,Available,Very Good
+28,FPGA004,Lattice ECP5-45,Lattice,FPGA04,FPGA Board,2021-07-01,Low-power FPGA for IoT applications,Available,Excellent
+29,VR005,Sony PlayStation VR,Sony,VR05,VR/AR Device,2021-02-28,Includes PS Move controllers,Available,Very Good
+30,MIS005,GoPro HERO9 Black,GoPro,MIS05,Miscellaneous,2021-06-15,Action camera for recording experiments,Unavailable,Excellent
+31,MD008,OnePlus 8T,OnePlus,MD08,Mobile Devices,2021-08-08,Lightweight and powerful,Unavailable,Excellent
+32,CAM006,Panasonic Lumix GH5,Panasonic,CAM06,Camera,2019-11-15,Professional-grade mirrorless camera,Available,Very Good
+33,COM005,Microsoft Surface Pro 7,Microsoft,COM05,Computer,2020-04-22,Versatile 2-in-1 laptop-tablet,Unavailable,Good
+34,FPGA005,Xilinx Kintex-7,Xilinx,FPGA05,FPGA Board,2020-09-10,Reliable FPGA for research and development,Available,Very Good
+35,VR006,Samsung Odyssey+,Samsung,VR06,VR/AR Device,2019-10-01,High-resolution VR headset,Available,Very Good
+36,MIS006,Philips Hue Starter Kit,Philips,MIS06,Miscellaneous,2020-07-05,Smart lighting for lab experiments,Available,Excellent
+37,MD009,Google Pixel 4a,Google,MD09,Mobile Devices,2021-03-18,Compact and reliable,Unavailable,Very Good
+38,CAM007,Nikon Z6,Nikon,CAM07,Camera,2019-12-15,Mirrorless camera for photography,Unavailable,Very Good
+39,COM006,MacBook Air (M1),Apple,COM06,Computer,2020-11-28,Lightweight and powerful,Available,Excellent
+40,FPGA006,Intel Cyclone V,Intel,FPGA06,FPGA Board,2021-01-10,FPGA for low-power applications,Unavailable,Very Good
+41,VR007,Oculus Quest,Oculus,VR07,VR/AR Device,2020-08-05,Wireless VR headset with hand tracking,Available,Excellent
+42,MIS007,Amazon Echo Dot (3rd Gen),Amazon,MIS07,Miscellaneous,2020-03-10,Voice assistant for experiments,Unavailable,Very Good
+43,MD010,Samsung Galaxy Note 20,Samsung,MD10,Mobile Devices,2021-09-30,Large display for VR applications,Unavailable,Excellent
+44,CAM008,Canon EOS Rebel T7i,Canon,CAM08,Camera,2019-08-10,Entry-level DSLR for photography,Unavailable,Very Good
+45,COM007,Lenovo ThinkCentre M720,Lenovo,COM07,Computer,2021-04-25,Compact desktop PC for lab use,Unavailable,Excellent
+46,FPGA007,Altera DE2-115,Intel (Altera),FPGA07,FPGA Board,2020-12-15,Educational FPGA development board,Available,Good
+47,VR008,HP Reverb G2,HP,VR08,VR/AR Device,2021-02-28,High-resolution VR headset with controllers,Unavailable,Excellent
+48,MIS008,GoPro HERO7 Black,GoPro,MIS08,Miscellaneous,2020-11-05,Action camera for outdoor experiments,Unavailable,Very Good
+49,MD011,iPhone 13 Pro,Apple,MD11,Mobile Devices,2021-09-14,Latest iPhone model,Unavailable,Excellent
+50,CAM009,Sony A6400,Sony,CAM09,Camera,2021-07-02,Compact mirrorless camera,Unavailable,Excellent
+51,COM008,Dell Precision 5550,Dell,COM08,Computer,2020-07-20,Workstation for VR development,Unavailable,Excellent
+52,FPGA008,Xilinx Zynq-7000,Xilinx,FPGA08,FPGA Board,2021-05-12,Embedded system development,Unavailable,Very Good
+53,VR009,Oculus Quest 2,Oculus,VR09,VR/AR Device,2021-11-22,Wireless VR headset with improved performance,Unavailable,Excellent
+54,MIS009,DJI Mavic Air 2,DJI,MIS09,Miscellaneous,2021-08-10,Aerial drone for research,Unavailable,Excellent
+55,MD012,OnePlus 9,OnePlus,MD12,Mobile Devices,2021-04-15,Powerful Android smartphone,Unavailable,Excellent
