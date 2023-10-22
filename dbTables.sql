@@ -116,7 +116,7 @@ CREATE TABLE VRARDevice (
 \COPY Users FROM 'CSVFiles/Users.csv' DELIMITER ',' CSV HEADER
 \COPY Project FROM 'CSVFiles/Project.csv' DELIMITER ',' CSV HEADER
 \COPY UsersProject FROM 'CSVFiles/UsersProject.csv' DELIMITER ',' CSV HEADER
-\COPY Equipment FROM 'CSVFiles/Equipment.csv' DELIMITER ',' CSV HEADER -- error here
+\COPY Equipment FROM 'CSVFiles/Equipment.csv' DELIMITER ',' CSV HEADER
 \COPY Transaction FROM 'CSVFiles/Transaction.csv' DELIMITER ',' CSV HEADER
 \COPY MobileDevice FROM 'CSVFiles/MobileDevice.csv' DELIMITER ',' CSV HEADER
 \COPY Camera FROM 'CSVFiles/Camera.csv' DELIMITER ',' CSV HEADER 
