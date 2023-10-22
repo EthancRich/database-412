@@ -1,0 +1,13 @@
+equip_id,mobile_type,chipset,operating_system,ram,storage,ip_address
+1,Smartphone,A14 Bionic (5nm),IOS 14.1,4GB,128GB,33.75.72.56
+2,Smartphone,Exynos 2100 (5 nm),Andriod 11,8GB,256GB,235.217.106.23
+3,Smartphone,Qualcomm SM7250 Snapdragon 765G 5G (7 nm),Andriod 11,8GB,128GB,251.209.77.198
+4,Smartphone,Qualcomm SM8350 Snapdragon 888 5G (5 nm),Andriod 11,12GB,256GB,244.15.1.31
+5,Smartphone,Qualcomm SM8350 Snapdragon 888 5G (5 nm),Andriod 11,8GB,256GB,50.99.177.2
+19,Smartphone,Qualcomm SM4350 Snapdragon 480 5G (8 nm),Andriod 11,4GB,64GB,24.167.220.117
+25,Smartphone,Apple A13 Bionic (7 nm+),IOS 13,3GB,128GB,43.252.88.115
+31,Smartphone,Qualcomm SM8250 Snapdragon 865 5G (7 nm+),Andriod 11,12GB,256GB,65.194.96.45
+37,Smartphone,Qualcomm SDM730 Snapdragon 730G (8 nm),Andriod 10,6GB,128GB,7.96.23.120
+43,Smartphone,Qualcomm SM8250 Snapdragon 865 5G+ (7 nm+),Andriod 10,8GB,256GB,70.162.252.249
+49,Smartphone,Apple A15 Bionic (5 nm),IOS 15,6GB,256GB,50.216.101.168
+55,Smartphone,Qualcomm SM8350 Snapdragon 888 5G (5 nm),Andriod 11,12GB,256GB,208.171.221.67

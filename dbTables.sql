@@ -109,41 +109,17 @@ CREATE TABLE VRARDevice (
     FOREIGN KEY (equip_id) REFERENCES Equipment(equip_id)
 );
 
-INSERT INTO Users (users_id, users_name) 
-VALUES ('jadoe1', 'Jane Doe');
+-- \COPY is a psql command line version, and it has to be formatted like the command all on one line, terminated by new lines and not semicolon.
+-- COPY doesn't work here, because COPY reads from the server side, however our CSV files don't exist where the server does (/tmp).
+-- This is a better alternative than to require we copy everything to /tmp before using COPY.
 
-INSERT INTO Project (project_name, sponsor)
-VALUES ('Janes Team', 'State Farm');
-
-INSERT INTO UsersProject (users_id, project_name, sponsor, is_team_lead)
-VALUES ('jadoe1', 'Janes Team', 'State Farm', TRUE);
-
-INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
-VALUES (8877, 'XY234', 'VR Headset', 'Meta', 'None', 'VRARDevice', '2022-11-23', NULL, 'checked out', 'New');
-INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
-VALUES (1234, 'ZZ123', 'iPhone 14', 'Apple', 'None', 'MobileDevice', '2022-11-23', NULL, 'checked out', 'New');
-INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
-VALUES (2456, 'A1B2C3', 'aCameraName', 'Canon', 'None', 'Camera', '2022-11-23', NULL, 'checked out', 'New');
-INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
-VALUES (4563, '3216AC', 'Raspberry Pi 4', 'Raspberry Pi', 'None', 'FPGADeviceBoard', '2022-11-23', NULL, 'checked out', 'New');
-INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, "status", condition)
-VALUES (3333, '980ASQ', 'Omen 15', 'HP', 'None', 'Computer', '2022-11-23', NULL, 'checked out', 'New');
-
-INSERT INTO Transaction (trans_id, checkout_date, expected_return_date, actual_return_date, comments, equipment_items, users_id)
-VALUES (1, '2023-03-12', '2023-05-11', NULL, NULL, '{8877}', 'jadoe1');
-
-INSERT INTO MobileDevice (equip_id, mobile_type, chipset, operating_system, ram, storage, ip_address)
-VALUES (1234, 'Smartphone', 'ChipA', 'OS A', '8GB', '128GB', '192.168.1.1');
-
-INSERT INTO Camera (equip_id, camera_type, resolution, megapixels, sd_card)
-VALUES (2456, 'DSLR', '4K', 20, '32GB');
-
-INSERT INTO FPGADeviceBoard (equip_id, board_type, storage)
-VALUES (4563, 'Microcontroller', '16GB');
-
-INSERT INTO VRARDevice (equip_id, storage)
-VALUES (8877, '128GB');
-
-INSERT INTO Computer (equip_id, computer_type, CPU, GPU, RAM, Storage, Operating_System, Hostname, IP_Address, Local_Admin) 
-VALUES (3333, 'Laptop', 'Intel i7-11800H', 'NVIDIA RTX 3050 Ti', '32GB', '1TB SSD', 'Windows 11', 'HP-XPS-USER', '192.168.1.11', 'admin');
-
+\COPY Users FROM 'CSVFiles/Users.csv' DELIMITER ',' CSV HEADER
+\COPY Project FROM 'CSVFiles/Project.csv' DELIMITER ',' CSV HEADER
+\COPY UsersProject FROM 'CSVFiles/UsersProject.csv' DELIMITER ',' CSV HEADER
+\COPY Equipment FROM 'CSVFiles/Equipment.csv' DELIMITER ',' CSV HEADER -- error here
+\COPY Transaction FROM 'CSVFiles/Transaction.csv' DELIMITER ',' CSV HEADER
+\COPY MobileDevice FROM 'CSVFiles/MobileDevice.csv' DELIMITER ',' CSV HEADER
+\COPY Camera FROM 'CSVFiles/Camera.csv' DELIMITER ',' CSV HEADER 
+\COPY Computer FROM 'CSVFiles/Computer.csv' DELIMITER ',' CSV HEADER
+\COPY FPGADeviceBoard FROM 'CSVFiles/FPGADeviceBoard.csv' DELIMITER ',' CSV HEADER
+\COPY VRARDevice FROM 'CSVFiles/VRARDevice.csv' DELIMITER ',' CSV HEADER
