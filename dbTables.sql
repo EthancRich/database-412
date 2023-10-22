@@ -109,46 +109,17 @@ CREATE TABLE VRARDevice (
     FOREIGN KEY (equip_id) REFERENCES Equipment(equip_id)
 );
 
--- COPY tables from CSV files
--- Another example I saw if this one doesnt work: COPY persons(first_name, last_name, dob, email) FROM 'C:\sampledb\persons.csv' DELIMITER ',' CSV HEADER;
--- Path matches the Github folder path
+-- \COPY is a psql command line version, and it has to be formatted like the command all on one line, terminated by new lines and not semicolon.
+-- COPY doesn't work here, because COPY reads from the server side, however our CSV files don't exist where the server does (/tmp).
+-- This is a better alternative than to require we copy everything to /tmp before using COPY.
 
-COPY Users(users_id, users_name)
-    FROM 'database-412/CSVFiles/Users.csv'
-    WITH (FORMAT csv);
-
-COPY Project(project_name, sponsor)
-    FROM 'database-412/CSVFiles/Project.csv'
-    WITH (FORMAT csv);
-
-COPY UsersProject(users_id, project_name, sponsor, is_team_lead)
-    FROM 'database-412/CSVFiles/UsersProject.csv'
-    WITH (FORMAT csv);
-
-COPY Equipment(equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, status, condition)
-    FROM 'database-412/CSVFiles/Equipment.csv'
-    WITH (FORMAT csv);
-
-COPY Transaction(trans_id, users_id, expected_return_date, actual_return_date, comments, equipment_items)
-    FROM 'database-412/CSVFiles/Transaction.csv'
-    WITH (FORMAT csv);
-
-COPY MobileDevice(equip_id, mobile_type, operating_system, ram, storage, ip_address)
-    FROM 'database-412/CSVFiles/MobileDevice.csv'
-    WITH (FORMAT csv);
-
-COPY Camera(equip_id, camera_type, resolution, megapixels, sd_card)
-    FROM 'database-412/CSVFiles/Camera.csv'
-    WITH (FORMAT csv);
-
-COPY Computer(equip_id, computer_type, cpu, gpu, ram, storage, hostname, operating_system, local_admin, ip_address)
-    FROM 'database-412/CSVFiles/Computer.csv'
-    WITH (FORMAT csv);
-
-COPY FPGADeviceBoard(equip_id, board_type, storage)
-    FROM 'database-412/CSVFiles/FPGADeviceBoard.csv'
-    WITH (FORMAT csv);
-
-COPY VRARDevice(equip_id, storage)
-    FROM 'database-412/CSVFiles/VRARDevice.csv'
-    WITH (FORMAT csv);
+\COPY Users FROM 'CSVFiles/Users.csv' DELIMITER ',' CSV HEADER
+\COPY Project FROM 'CSVFiles/Project.csv' DELIMITER ',' CSV HEADER
+\COPY UsersProject FROM 'CSVFiles/UsersProject.csv' DELIMITER ',' CSV HEADER
+\COPY Equipment FROM 'CSVFiles/Equipment.csv' DELIMITER ',' CSV HEADER -- error here
+\COPY Transaction FROM 'CSVFiles/Transaction.csv' DELIMITER ',' CSV HEADER
+\COPY MobileDevice FROM 'CSVFiles/MobileDevice.csv' DELIMITER ',' CSV HEADER
+\COPY Camera FROM 'CSVFiles/Camera.csv' DELIMITER ',' CSV HEADER 
+\COPY Computer FROM 'CSVFiles/Computer.csv' DELIMITER ',' CSV HEADER
+\COPY FPGADeviceBoard FROM 'CSVFiles/FPGADeviceBoard.csv' DELIMITER ',' CSV HEADER
+\COPY VRARDevice FROM 'CSVFiles/VRARDevice.csv' DELIMITER ',' CSV HEADER
