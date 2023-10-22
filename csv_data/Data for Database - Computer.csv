@@ -1,9 +1,0 @@
-equip_id,computer_type,cpu,gpu,ram,storage,hostname,operating_system,local_admin,ip_address
-9,Desktop,Intel Core i7,NVIDIA GeForce RTX 3050,8GB,128GB,pteleum,Windows 10,admin,80.71.216.181
-10,Laptop,Apple M1,NA,16GB,512GB,turin,MacOS,admin,28.27.199.132
-21,Laptop,Intel Core i7,Intel Iris Xe,16GB,256GB,amlash,Windows 11 Pro,admin,32.170.123.13
-27,Laptop,Intel Core i9,NVIDIA RTX A5500 Laptop GPU,16GB,256GB,brisbane,Windows 10,admin,100.60.245.28
-33,Laptop,Intel Core i9,Intel Iris Xe,8GB,512GB,karaj,Windows 10,admin,142.162.219.112
-39,Laptop,Apple M1,NA,16GB,512GB,hiroshima,MacOS,admin,143.138.104.44
-45,Laptop,Intel Core i7,NVIDIA RTX A5500 Laptop GPU,,256GB,campobasso,Windows 11 Pro,admin,94.61.139.38
-51,Desktop,Intel Core i9,NVIDIA GeForce RTX 3050,16GB,512GB,benevento,Windows 10,admin,166.180.136.2

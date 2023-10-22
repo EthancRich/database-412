@@ -1,9 +1,0 @@
-equip_id,board_type,storage
-11,Microcontroller,16GB
-12,FPGA,32GB
-22,FPGA,16GB
-28,Microcontroller,32GB
-34,FPGA,64GB
-40,Microcontroller,32GB
-46,FPGA,16GB
-52,Other,32GB

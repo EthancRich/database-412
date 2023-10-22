@@ -109,6 +109,10 @@ CREATE TABLE VRARDevice (
     FOREIGN KEY (equip_id) REFERENCES Equipment(equip_id)
 );
 
+
+
+
+
 -- Replace all below with downloaded data in this branch
 
 INSERT INTO Users (users_id, users_name) 
