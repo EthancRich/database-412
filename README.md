@@ -16,7 +16,6 @@ https://stackoverflow.com/questions/5420789/how-to-install-psycopg2-with-pip-on-
 installed libpq-dev with the correct python version and it was all good
 
 ## Setting up the local environment
-
 Make sure that your local database server is running with the following command:
 `pg_ctl -D PATH/TO/YOUR/DBSERVERFILE -o '-k /tmp' start`
 For students in CSE412, this database server folder is `db412`.

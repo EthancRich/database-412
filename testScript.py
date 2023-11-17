@@ -9,14 +9,14 @@ if len(sys.argv) != 2:
     exit(1)
 
 # Establish a connection to the Database
-connection = psycopg2.connect(database="inventory", host="/tmp", user=sys.argv[1], password="", port="8888")
+connection = psycopg2.connect(database="db", host="/tmp", user=sys.argv[1], password="", port="8888")
 
 # Create a cursor for interacting with the database
 cursor = connection.cursor()
 
 # Attempt a test query, and retrieve the output of the query
-# cursor.execute("SELECT * FROM PART")
-# print(cursor.fetchmany(size=3))
+cursor.execute("SELECT * FROM project")
+print(cursor.fetchmany(size=10))
 
 # Close the connection
 cursor.close()
