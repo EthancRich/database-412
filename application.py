@@ -10,7 +10,7 @@ def connect_to_db():
         port="5432",
         database="ozhptawz",
         user="ozhptawz",
-        password="rw1e9fAoDhnYmq4D2QKgu51o4g7zS-fJ"
+        password="rw1e9fAoDhnYmq4D2QKgu51o4g7zS-fJ" # THIS IS UNSAFE. REMOVE THIS IN THE FUTURE.
     )
     return conn
 

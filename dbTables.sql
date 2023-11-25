@@ -42,13 +42,14 @@ CREATE TABLE Equipment (
 
 CREATE TABLE Transaction (
     trans_id INT NOT NULL,
-    users_id VARCHAR(255) NOT NULL REFERENCES Users (users_id),
+    users_id VARCHAR(255) NOT NULL,
     equipment_items INT[],                      --array of equip_id's
     checkout_date DATE,
     expected_return_date DATE,
     actual_return_date DATE,
     comments VARCHAR(1023),
-    PRIMARY KEY (trans_id) 
+    PRIMARY KEY (trans_id),
+    FOREIGN KEY (users_id) REFERENCES Users (users_id)
 );
 
 CREATE TABLE MobileDevice(
