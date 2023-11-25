@@ -6,11 +6,11 @@ from psycopg2 import sql
 # Define function to connect to your PostgreSQL database
 def connect_to_db():
     conn = psycopg2.connect(
-        host="127.0.0.1",
-        port="8888",
-        database="db",
-        user="nbalamur",
-        password=""
+        host="bubble.db.elephantsql.com",
+        port="5432",
+        database="ozhptawz",
+        user="ozhptawz",
+        password="rw1e9fAoDhnYmq4D2QKgu51o4g7zS-fJ"
     )
     return conn
 
