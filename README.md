@@ -8,8 +8,13 @@ Danny, Aaron, Neha, Ethan
 Here's a placeholder introduction to our project.
 
 ## Notes on getting the install to work
+Python version requirements: Python 3.8 - Python 3.11
+
 You need psycopg2
-`pip3 install psycopg2`
+`pip3 install psycopg2-binary`
+
+Install streamlit
+`pip install streamlit`
 
 I had errors with it, but found this article that fixed the issue:
 https://stackoverflow.com/questions/5420789/how-to-install-psycopg2-with-pip-on-python
