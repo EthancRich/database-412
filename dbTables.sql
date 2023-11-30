@@ -26,6 +26,9 @@ CREATE TABLE UsersProject (
     FOREIGN KEY (project_name, sponsor) REFERENCES Project (project_name, sponsor)
 );
 
+CREATE TYPE condition AS ENUM ('Good','Issues', 'Broken' );
+CREATE TYPE status AS ENUM ('Available','Unavailable');
+
 CREATE TABLE Equipment (
     equip_id INT NOT NULL,
     serial_number VARCHAR(255),

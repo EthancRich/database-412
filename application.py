@@ -8,17 +8,6 @@ from pages.home import show as show_home
 from pages.checkout import show as show_checkout
 from pages.return_items import show as show_return_items
 
-# Define function to connect to your PostgreSQL database
-def connect_to_db():
-    conn = psycopg2.connect(
-        host="bubble.db.elephantsql.com",
-        port="5432",
-        database="ozhptawz",
-        user="ozhptawz",
-        password="rw1e9fAoDhnYmq4D2QKgu51o4g7zS-fJ" #THIS IS UNSAFE. REMOVE THIS IN THE FUTURE.
-    )
-    return conn
-
 # Define function to get available items from the database
 def get_available_items(conn):
     with conn.cursor() as cur:
@@ -80,7 +69,7 @@ if not st.session_state['logged_in']:
         st.session_state['user_role'] = user_role
         st.experimental_rerun()
 else:
-    # Display the selected page
+    
     # Function to handle logout
     def logout():
         for key in st.session_state.keys():
