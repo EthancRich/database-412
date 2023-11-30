@@ -4,9 +4,9 @@ import psycopg2
 from psycopg2 import sql
 
 #Import the different pages 
-from pages.home import show as show_home
-from pages.checkout import show as show_checkout
-from pages.return_items import show as show_return_items
+# from pages.home import show as show_home
+# from pages.checkout import show as show_checkout
+# from pages.return_items import show as show_return_items
 
 # Define function to get available items from the database
 def get_available_items(conn):
