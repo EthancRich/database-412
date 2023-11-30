@@ -26,8 +26,8 @@ CREATE TABLE UsersProject (
     FOREIGN KEY (project_name, sponsor) REFERENCES Project (project_name, sponsor)
 );
 
-CREATE TYPE condition AS ENUM ('Good','Issues', 'Broken' );
-CREATE TYPE status AS ENUM ('Available','Unavailable');
+CREATE TYPE conditions AS ENUM ('Good','Issues', 'Broken' );
+CREATE TYPE statuses AS ENUM ('Available','Unavailable');
 
 CREATE TABLE Equipment (
     equip_id INT NOT NULL,
@@ -38,8 +38,8 @@ CREATE TABLE Equipment (
     category VARCHAR(255),                      --do we want to abstract this to an int that represents each category? What are the categories
     purchase_date DATE,
     comments VARCHAR(1023),
-    "status" VARCHAR(1023),                     --What pre-defined statuses do we want
-    condition VARCHAR(255),                     --What pre-defined conditions do we want
+    "status" statuses,                     
+    condition conditions,                     
     PRIMARY KEY (equip_id)
 );
 
