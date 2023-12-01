@@ -15,11 +15,6 @@ def logout():
 if st.sidebar.button("Logout"):
     logout()
 
-st.title("Home Page")
-st.write("Welcome to the Lab Equipment Inventory System!")
-
-# TO DO: Add more content for the Home Page here
-
 #Connect to database
 # Define function to connect to your PostgreSQL database
 #Connect to database and close connection on demand
@@ -42,4 +37,7 @@ def display_available_items():
         st.write(row)
     conn.close()
 
+# Writing things here
+st.title("Home Page")
+st.write("Welcome to the Lab Equipment Inventory System!")
 display_available_items()
