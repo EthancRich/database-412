@@ -8,6 +8,15 @@ import pandas as pd
 #     st.error("You are not logged in.")
 #     st.stop()
 
+# homeview describes the main table being displayed each run.
+#   0 - no table to display.
+#   1 - all table
+#   2 - out table
+#   3 - in table
+#   4 - hist table
+if 'homeview' not in st.session_state:
+    st.session_state['homeview'] = 0
+
 def logout():
         for key in st.session_state.keys():
             del st.session_state[key]
@@ -66,6 +75,15 @@ def display_hist_table(): # trans_id,users_id,equipment_items,checkout_date,expe
     data_frame = pd.DataFrame(raw_data, columns=column_names)
     st.dataframe(data_frame)
 
+def display_home_table(value):
+    if value == 1:
+        display_all_table()
+    elif value == 2:
+        display_out_table()
+    elif value == 3:
+        display_in_table()
+    elif value == 4:
+        display_hist_table()
 
 ###--------------------- DRAWING THE PAGE ---------------------###
 
@@ -78,16 +96,22 @@ if st.sidebar.button("Logout"):
     logout()
 
 if col1.button('All Items'):
-    display_all_table()
+    st.session_state['homeview'] = 1
 
 if col2.button('Checked Out'):
-    display_out_table()
+    st.session_state['homeview'] = 2
 
 if col3.button('Available'):
-    display_in_table()
+    st.session_state['homeview'] = 3
 
 if col4.button('Transaction History'):
     if st.session_state['user_role'] == "admin":
-        display_hist_table()
+        st.session_state['homeview'] = 4
     else:
         st.error("You do not have the privileges to view this content.")
+
+display_home_table(st.session_state['homeview'])
+
+# option = st.selectbox(
+#     'How would you like to be contacted?',
+#     ('Email', 'Home phone', 'Mobile phone'))
