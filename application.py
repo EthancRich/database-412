@@ -15,17 +15,23 @@ def get_available_items(conn):
         rows = cur.fetchmany(size=10)
         return pd.DataFrame(rows, columns=['ID', 'Name'])
 
+def load_users_from_csv(file_path):
+    #Load the CSV file into a pandas dataframe
+    df = pd.read_csv(file_path)
+    users = {row['users_id']: {"password": "123", "role": "student", "name": row['users_name']} for index, row in df.iterrows()}
+    
+    # Add a manual entry for the admin user
+    users['admin'] = {"password": "adminpass", "role": "admin", "name": "Admin User"}
 
-# Hard-coded user credentials for demonstration purposes
-users = {
-    "admin": {"password": "adminpass", "role": "admin"},
-    "student": {"password": "studentpass", "role": "student"}
-}
+    return users
+
+
+users = load_users_from_csv("CSVFiles/Users.csv")
+
 
 # Initialize session state
 if 'authenticated' not in st.session_state:
     st.session_state['authenticated'] = False
-
 
 # Function to display centered login form
 def show_login_form():
@@ -49,8 +55,10 @@ def show_login_form():
 def check_credentials(username, password, user_type):
     user_info = users.get(username)
     if user_info and user_info["password"] == password and user_info["role"] == user_type.lower():
+        st.session_state['user_name'] = user_info["name"] #Store the user name in the session state = global variable
         return user_info["role"]
     else:
+        st.error("The username or password you entered is incorrect.")
         return None
 
 #username, password, user_type = show_login_form()
@@ -67,6 +75,8 @@ if not st.session_state['logged_in']:
     if user_role:
         st.session_state['logged_in'] = True
         st.session_state['user_role'] = user_role
+        st.session_state['user_id'] = username #Store the user ID in the session state = global variable
+        
         st.experimental_rerun()
 else:
     
