@@ -20,9 +20,12 @@ if 'homeview' not in st.session_state:
 
 # add_edit_remove tells which button menu is currently being used.
 #   0 - no button being used.   1 - Add button
-#   2 - Edit button             3 - Remove button
+#   2 - Edit button             3 - Remove button       4 - more info
 if 'add_edit_remove' not in st.session_state:
     st.session_state['add_edit_remove'] = 0
+
+if 'info_display' not in st.session_state:
+    st.session_state['info_display'] = 0
 
 ###---------- DB CONNECTIVITY ----------###
 
@@ -379,7 +382,7 @@ def display_other_entry():
                 cur.execute("""
                 INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, \"status\", condition)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-                """, (maxID+1, serial_selection, product_selection, manufacturer_selection, label_selection, "Other", date_selection, comment_selection, status_selection, condition_selection))
+                """, (maxID+1, serial_selection, product_selection, manufacturer_selection, label_selection, "Miscellaneous", date_selection, comment_selection, status_selection, condition_selection))
 
                 conn.commit()
                 st.success("Item sucessfully added.")
@@ -392,7 +395,7 @@ def display_other_entry():
 
 def display_add_items():
     selection = st.selectbox('What type of item would you like to add?',
-    ('Mobile Device', 'Camera', 'Computer', 'FPGA Board', 'VR/AR', 'Other'))
+    ('Mobile Device', 'Camera', 'Computer', 'FPGA Board', 'VR/AR', 'Miscellaneous'))
 
     if selection == "Mobile Device":
         display_mobile_device_entry()
@@ -404,8 +407,75 @@ def display_add_items():
         display_fpga_entry()
     elif selection == "VR/AR":
         display_vrar_entry()
-    elif selection == "Other":
+    elif selection == "Miscellaneous":
         display_other_entry()
+
+def info_callback(value):
+
+    cur.execute(f"""
+    SELECT COUNT(*)
+    FROM Equipment
+    WHERE equip_id = {value};
+    """)
+    if cur.fetchall()[0][0] == 1:
+        try:
+            # Get the category of the item
+            cur.execute(f"""
+            SELECT Category
+            FROM Equipment
+            WHERE equip_id = {value};
+            """)
+            category = cur.fetchall()[0][0]
+
+            # Create a query based on the category
+            if category == "Mobile Devices":
+                cur.execute(f"SELECT * FROM MobileDevice WHERE equip_id={value}")
+                raw_data = cur.fetchall()
+                column_names = ['ID#', 'Mobile Type', 'Chipset', 'Operating System', 'RAM', 'Storage', 'IP Address']
+                data_frame = pd.DataFrame(raw_data, columns=column_names)
+                st.dataframe(data_frame)
+
+            elif category == "Camera":
+                cur.execute(f"SELECT * FROM Camera WHERE equip_id={value}")
+                raw_data = cur.fetchall()
+                column_names = ['ID#', 'Camera Type', 'Resolution', 'Megapixels', 'SD Card']
+                data_frame = pd.DataFrame(raw_data, columns=column_names)
+                st.dataframe(data_frame)
+
+            elif category == "Computer":
+                cur.execute(f"SELECT * FROM Computer WHERE equip_id={value}")
+                raw_data = cur.fetchall() 
+                column_names = ['ID#', 'Computer Type', 'CPU', 'GPU', 'RAM', 'Storage', 'Host Name', 'Operating System', 'Local Admin', 'IP Address']
+                data_frame = pd.DataFrame(raw_data, columns=column_names)
+                st.dataframe(data_frame)
+
+            elif category == "FPGA Board":
+                cur.execute(f"SELECT * FROM FPGADeviceBoard WHERE equip_id={value}")
+                raw_data = cur.fetchall()
+                column_names = ['ID#', 'Board Type', 'Storage']
+                data_frame = pd.DataFrame(raw_data, columns=column_names)
+                st.dataframe(data_frame)
+
+            elif category == "VR/AR Device":
+                cur.execute(f"SELECT * FROM VRARDevice WHERE equip_id={value}")
+                raw_data = cur.fetchall()
+                column_names = ['ID#', 'Storage']
+                data_frame = pd.DataFrame(raw_data, columns=column_names)
+                st.dataframe(data_frame)
+
+            elif category == "Miscellaneous":
+                st.error('Miscellaneous Item: No futher information available.')
+
+        except Exception as err:
+            print_psycopg2_exception(err)
+            conn.rollback()
+    else:
+        st.error("Equip_id invalid. ID must be present and unique.")
+
+def display_info_items():
+    eid = st.number_input('Select the ID# of the item you\'d like to examine:', min_value=1, value=None, step=1)
+    if st.button('Confirm') and eid != None:
+        info_callback(eid)
 
 def display_add_edit_remove_items(value):
     if value == 1:
@@ -414,19 +484,27 @@ def display_add_edit_remove_items(value):
         pass
     elif value == 3:
         display_remove_items()
+    elif value == 4:
+        display_info_items()
 
 def display_home_table(value):
     if value == 1:
         display_all_table()
 
         if st.session_state['user_role'] == "admin":
-            col1, col2, col3 = st.columns([0.9,1.15,4])
+            col1, col2, col3, col4 = st.columns([0.9,1.15,0.9,3.4])
             if col1.button('Add Item'):
                 st.session_state['add_edit_remove'] = 1
+                st.session_state['info_display'] = 0
             if col2.button('Remove Item'):
                 st.session_state['add_edit_remove'] = 3
+                st.session_state['info_display'] = 0
             if col3.button('Edit Item'):
                 st.session_state['add_edit_remove'] = 2
+                st.session_state['info_display'] = 0
+            if col4.button('More Item Info'):
+                st.session_state['add_edit_remove'] = 4
+                st.session_state['info_display'] = 0
 
             display_add_edit_remove_items(st.session_state['add_edit_remove'])
         
@@ -455,6 +533,7 @@ if st.sidebar.button("Logout"):
 if col1.button('All Items'):
     st.session_state['homeview'] = 1
     st.session_state['add_edit_remove'] = 0
+    st.session_state['info_display'] = 0
 
 if col2.button('Checked Out'):
     st.session_state['homeview'] = 2
