@@ -24,8 +24,9 @@ if 'homeview' not in st.session_state:
 if 'add_edit_remove' not in st.session_state:
     st.session_state['add_edit_remove'] = 0
 
-if 'info_display' not in st.session_state:
-    st.session_state['info_display'] = 0
+if 'edit_display' not in st.session_state:
+    st.session_state['edit_display'] = 0
+
 
 ###---------- DB CONNECTIVITY ----------###
 
@@ -477,11 +478,357 @@ def display_info_items():
     if st.button('Confirm') and eid != None:
         info_callback(eid)
 
+def execute_edit_sql(category, attribute, new_input, equip_id):
+    if attribute == "Serial Number":
+        cur.execute(f"""
+        UPDATE Equipment SET serial_number = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "Product Name":
+        cur.execute(f"""
+        UPDATE Equipment SET product_name = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "Manufacturer":
+        cur.execute(f"""
+        UPDATE Equipment SET manufacturer = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "Label":
+        cur.execute(f"""
+        UPDATE Equipment SET label = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "Comments":
+        cur.execute(f"""
+        UPDATE Equipment SET  = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "Chipset" and category == "Mobile Devices":
+        cur.execute(f"""
+        UPDATE MobileDevice SET chipset = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "Operating System" and category == "Mobile Devices":
+        cur.execute(f"""
+        UPDATE Equipment SET operating_system = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "RAM" and category == "Mobile Devices":
+        cur.execute(f"""
+        UPDATE Equipment SET ram = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "Storage" and category == "Mobile Devices":
+        cur.execute(f"""
+        UPDATE Equipment SET  = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "Resolution" and category == "Camera":
+        cur.execute(f"""
+        UPDATE Camera SET resolution = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "Megapixels" and category == "Camera":
+        cur.execute(f"""
+        UPDATE Camera SET megapixels = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "SD Card" and category == "Camera":
+        cur.execute(f"""
+        UPDATE Camera SET sd_card = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "CPU" and category == "Computer":
+        cur.execute(f"""
+        UPDATE Computer SET cpu = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "GPU" and category == "Computer":
+        cur.execute(f"""
+        UPDATE Computer SET gpu = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "RAM" and category == "Computer":
+        cur.execute(f"""
+        UPDATE Computer SET ram = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "Storage" and category == "Computer":
+        cur.execute(f"""
+        UPDATE Computer SET storage = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "Host Name" and category == "Computer":
+        cur.execute(f"""
+        UPDATE Computer SET host_name = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "Operating System" and category == "Computer":
+        cur.execute(f"""
+        UPDATE Computer SET operating_system = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "Local Admin" and category == "Computer":
+        cur.execute(f"""
+        UPDATE Computer SET local_admin = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "Storage" and category == "FPGA Board":
+        cur.execute(f"""
+        UPDATE FPGADeviceBoard SET storage = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    elif attribute == "Storage" and category == "VR/AR Device":
+        cur.execute(f"""
+        UPDATE VRARDevice SET storage = \'{new_input}\'
+        WHERE equip_id = {equip_id};
+        """)
+    else:
+        st.error("Related query for entry could not be found, this shouldn't happen during operation.")
+
+def edit_input_fields(category, attribute, equip_id):
+
+    # Do the special case scenarios where there is a different kind of entry that isn't text        
+    if attribute == "Purchase Date":
+        new_input = st.date_input('Provide modified entry below:', format="MM/DD/YYYY", value=None)
+        if st.button('Submit'):
+            if new_input != None:
+                # try to modify the entry
+                try:
+                    cur.execute(f"""
+                    UPDATE Equipment SET purchase_date = \'{new_input}\'
+                    WHERE equip_id = {equip_id};
+                    """)
+                    conn.commit()
+                    st.success("Item sucessfully modified.")
+                    time.sleep(1)
+                    st.session_state['add_edit_remove'] = 0
+                    st.session_state['edit_display'] = 0
+                    st.rerun()
+                except Exception as err:
+                    st.error(print_psycopg2_exception(err))
+                    conn.rollback()
+            elif new_input == None:
+                st.error("Entry cannot be empty.")
+    elif attribute == "Condition":
+        new_input = st.selectbox('Provide modified entry below:', ('Good', 'Issues', 'Broken'), index=None)
+        if st.button('Submit'):
+            if new_input != None:
+                # try to modify the entry
+                try:
+                    cur.execute(f"""
+                    UPDATE Equipment SET condition = \'{new_input}\'
+                    WHERE equip_id = {equip_id};
+                    """)
+                    conn.commit()
+                    st.success("Item sucessfully modified.")
+                    time.sleep(1)
+                    st.session_state['add_edit_remove'] = 0
+                    st.session_state['edit_display'] = 0
+                    st.rerun()
+                except Exception as err:
+                    st.error(print_psycopg2_exception(err))
+                    conn.rollback()
+            elif new_input == None:
+                st.error("Entry cannot be empty.")
+    elif attribute == "Mobile Type":
+        new_input = st.selectbox('Provide modified entry below:', ('Smartphone', 'Other'), index=None)
+        if st.button('Submit'):
+            if new_input != None:
+                # try to modify the entry
+                try:
+                    cur.execute(f"""
+                    UPDATE MobileDevice SET mobile_type = \'{new_input}\'
+                    WHERE equip_id = {equip_id};
+                    """)
+                    conn.commit()
+                    st.success("Item sucessfully modified.")
+                    time.sleep(1)
+                    st.session_state['add_edit_remove'] = 0
+                    st.session_state['edit_display'] = 0
+                    st.rerun()
+                except Exception as err:
+                    st.error(print_psycopg2_exception(err))
+                    conn.rollback()
+            elif new_input == None:
+                st.error("Entry cannot be empty.")
+    elif attribute == "IP Address" and category == "Mobile Devices":
+        new_input = st.text_input('Provide modified entry below:', max_chars=45)
+        if st.button('Submit'):
+            if new_input != None:
+                # try to modify the entry
+                try:
+                    cur.execute(f"""
+                    UPDATE MobileDevice SET ip_address = \'{new_input}\'
+                    WHERE equip_id = {equip_id};
+                    """)
+                    conn.commit()
+                    st.success("Item sucessfully modified.")
+                    time.sleep(1)
+                    st.session_state['add_edit_remove'] = 0
+                    st.session_state['edit_display'] = 0
+                    st.rerun()
+                except Exception as err:
+                    st.error(print_psycopg2_exception(err))
+                    conn.rollback()
+            elif new_input == "":
+                st.error("Entry cannot be empty.")
+    elif attribute == "IP Address" and category == "Computer":
+        new_input = st.text_input('Provide modified entry below:', max_chars=45)
+        if st.button('Submit'):
+            if new_input != None:
+                # try to modify the entry
+                try:
+                    cur.execute(f"""
+                    UPDATE Computer SET ip_address = \'{new_input}\'
+                    WHERE equip_id = {equip_id};
+                    """)
+                    conn.commit()
+                    st.success("Item sucessfully modified.")
+                    time.sleep(1)
+                    st.session_state['add_edit_remove'] = 0
+                    st.session_state['edit_display'] = 0
+                    st.rerun()
+                except Exception as err:
+                    st.error(print_psycopg2_exception(err))
+                    conn.rollback()
+            elif new_input == "":
+                st.error("Entry cannot be empty.")
+    elif attribute == "Camera Type":
+        new_input = st.selectbox('Provide modified entry below:', ('DSLR', 'Mirrorless', 'Point and Shoot', 'Action', '360', 'Drone', 'Other'), index=None)
+        if st.button('Submit'):
+            if new_input != None:
+                # try to modify the entry
+                try:
+                    cur.execute(f"""
+                    UPDATE Camera SET camera_type = \'{new_input}\'
+                    WHERE equip_id = {equip_id};
+                    """)
+                    conn.commit()
+                    st.success("Item sucessfully modified.")
+                    time.sleep(1)
+                    st.session_state['add_edit_remove'] = 0
+                    st.session_state['edit_display'] = 0
+                    st.rerun()
+                except Exception as err:
+                    st.error(print_psycopg2_exception(err))
+                    conn.rollback()
+            elif new_input == None:
+                st.error("Entry cannot be empty.")
+    elif attribute == "Computer Type":
+        new_input = st.selectbox('Provide modified entry below:', ('Desktop', 'Laptop', 'Server', 'Mainframe', 'Other'), index=None)
+        if st.button('Submit'):
+            if new_input != None:
+                # try to modify the entry
+                try:
+                    cur.execute(f"""
+                    UPDATE Computer SET computer_type = \'{new_input}\'
+                    WHERE equip_id = {equip_id};
+                    """)
+                    conn.commit()
+                    st.success("Item sucessfully modified.")
+                    time.sleep(1)
+                    st.session_state['add_edit_remove'] = 0
+                    st.session_state['edit_display'] = 0
+                    st.rerun()
+                except Exception as err:
+                    st.error(print_psycopg2_exception(err))
+                    conn.rollback()
+            elif new_input == None:
+                st.error("Entry cannot be empty.")
+    elif attribute == "Board Type":
+        new_input = st.selectbox('Provide modified entry below:', ('FPGA', 'Microcontroller', 'Other'), index=None)
+        if st.button('Submit'):
+            if new_input != None:
+                # try to modify the entry
+                try:
+                    cur.execute(f"""
+                    UPDATE FPGADeviceBoard SET board_type = \'{new_input}\'
+                    WHERE equip_id = {equip_id};
+                    """)
+                    conn.commit()
+                    st.success("Item sucessfully modified.")
+                    time.sleep(1)
+                    st.session_state['add_edit_remove'] = 0
+                    st.session_state['edit_display'] = 0
+                    st.rerun()
+                except Exception as err:
+                    st.error(print_psycopg2_exception(err))
+                    conn.rollback()
+            elif new_input == None:
+                st.error("Entry cannot be empty.")
+    else: # It's just a normal text entry
+        new_input = st.text_input('Provide modified entry below:', max_chars=255)
+        if st.button('Submit'):
+            if new_input != "":
+                # try to modify the entry
+                try:
+                    execute_edit_sql(category, attribute, new_input, equip_id)
+                    conn.commit()
+                    st.success("Item sucessfully modified.")
+                    time.sleep(1)
+                    st.session_state['add_edit_remove'] = 0
+                    st.session_state['edit_display'] = 0
+                    st.rerun()
+                except Exception as err:
+                    st.error(print_psycopg2_exception(err))
+                    conn.rollback()
+            elif new_input == "":
+                st.error("Entry cannot be empty.")
+
+def edit_callback(value):
+    cur.execute(f"""
+    SELECT COUNT(*)
+    FROM Equipment
+    WHERE equip_id = {value};
+    """)
+    if cur.fetchall()[0][0] == 1:
+        try:
+            # Get the category of the item
+            cur.execute(f"""
+            SELECT Category
+            FROM Equipment
+            WHERE equip_id = {value};
+            """)
+            category = cur.fetchall()[0][0]
+
+            # Populate a dropdown based on the category received
+            # equip_id,serial_number,product_name,manufacturer,label,category,purchase_date,comments,status,condition
+
+            if category == "Mobile Devices": #equip_id,mobile_type,chipset,operating_system,ram,storage,ip_address
+                attributes = ('Serial Number', 'Product Name', 'Manufacturer', 'Label', 'Purchase Date', 'Comments', 'Condition',  'Mobile Type', 'Chipset', 'Operating System', 'RAM', 'Storage', 'IP Address')
+            elif category == "Camera": # equip_id,camera_type,resolution,megapixels,sd_card
+                attributes = ('Serial Number', 'Product Name', 'Manufacturer', 'Label', 'Purchase Date', 'Comments', 'Condition', 'Camera Type', 'Resolution', 'Megapixels', 'SD Card')
+            elif category == "Computer": # equip_id,computer_type,cpu,gpu,ram,storage,hostname,operating_system,local_admin,ip_address
+                attributes = ('Serial Number', 'Product Name', 'Manufacturer', 'Label', 'Purchase Date', 'Comments', 'Condition', 'Computer Type', 'CPU', 'GPU', 'RAM', 'Storage', 'Host Name', 'Operating System', 'Local Admin', 'IP Address')
+            elif category == "FPGA Board": # equip_id,board_type,storage
+                attributes = ('Serial Number', 'Product Name', 'Manufacturer', 'Label', 'Purchase Date', 'Comments', 'Condition', 'Board Type', 'Storage')
+            elif category == "VR/AR Device":
+                attributes = ('Serial Number', 'Product Name', 'Manufacturer', 'Label', 'Purchase Date', 'Comments', 'Condition', 'Storage')
+            elif category == "Miscellaneous":
+                attributes = ('Serial Number', 'Product Name', 'Manufacturer', 'Label', 'Purchase Date', 'Comments', 'Condition')
+
+            selected_attr = st.selectbox('Which attribute would you like to edit?', attributes)
+            edit_input_fields(category, selected_attr, value)
+
+        except Exception as err:
+            print_psycopg2_exception(err)
+            conn.rollback()
+    else:
+        st.error("Equip_id invalid. ID must be present and unique.")
+
+def display_edit_items():
+    eid = st.number_input('Select the ID# of the item you\'d like to edit:', min_value=1, value=None, step=1)
+    if (st.button('Confirm') and eid != None) or st.session_state['edit_display']:
+        st.session_state['edit_display'] = 1
+        edit_callback(eid)
+
 def display_add_edit_remove_items(value):
     if value == 1:
         display_add_items()
     elif value == 2:
-        pass
+        display_edit_items()
     elif value == 3:
         display_remove_items()
     elif value == 4:
@@ -495,16 +842,13 @@ def display_home_table(value):
             col1, col2, col3, col4 = st.columns([0.9,1.15,0.9,3.4])
             if col1.button('Add Item'):
                 st.session_state['add_edit_remove'] = 1
-                st.session_state['info_display'] = 0
             if col2.button('Remove Item'):
                 st.session_state['add_edit_remove'] = 3
-                st.session_state['info_display'] = 0
             if col3.button('Edit Item'):
                 st.session_state['add_edit_remove'] = 2
-                st.session_state['info_display'] = 0
+                st.session_state['edit_display'] = 0
             if col4.button('More Item Info'):
                 st.session_state['add_edit_remove'] = 4
-                st.session_state['info_display'] = 0
 
             display_add_edit_remove_items(st.session_state['add_edit_remove'])
         
@@ -533,7 +877,6 @@ if st.sidebar.button("Logout"):
 if col1.button('All Items'):
     st.session_state['homeview'] = 1
     st.session_state['add_edit_remove'] = 0
-    st.session_state['info_display'] = 0
 
 if col2.button('Checked Out'):
     st.session_state['homeview'] = 2
