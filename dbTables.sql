@@ -55,9 +55,11 @@ CREATE TABLE Transaction (
     FOREIGN KEY (users_id) REFERENCES Users (users_id)
 );
 
+CREATE TYPE mobile_types AS ENUM ('Smartphone', 'Other')
+
 CREATE TABLE MobileDevice(
     equip_id INT NOT NULL,
-    mobile_type VARCHAR(255),
+    mobile_type mobile_types,
     chipset VARCHAR(255),
     operating_system VARCHAR(255),
     ram VARCHAR(255),          
