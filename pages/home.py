@@ -52,11 +52,11 @@ def print_psycopg2_exception(err):
     print ("psycopg2 traceback:", traceback, "-- type:", err_type)
 
     # psycopg2 extensions.Diagnostics object attribute
-    print ("\nextensions.Diagnostics:", err.diag)
+    print ("\nextensions.Diagnostics:", err)
 
     # print the pgcode and pgerror exceptions
-    print ("pgerror:", err.pgerror)
-    print ("pgcode:", err.pgcode, "\n")
+    # print ("pgerror:", err.pgerror)
+    # print ("pgcode:", err.pgcode, "\n")
 
 # Actually start up the cursor for the queries
 conn = connect_to_db()
@@ -155,17 +155,22 @@ def display_mobile_device_entry():
             st.error("One or more required fields are not filled in.")
         else:
             try:
+                cur.execute("SELECT MAX(equip_id) FROM Equipment;")
+                maxID = cur.fetchall()[0][0]
+                
                 cur.execute("""
-                INSERT INTO Equipment (serial_number, product_name, manufacturer, label, category, purchase_date, comments, \"status\", condition)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
-                """, (serial_selection, product_selection, manufacturer_selection, label_selection, "Mobile Devices", date_selection, comment_selection, status_selection, condition_selection))
-                cur.execute(f"""
-                INSERT INTO MobileDevice ()
-                VALUES ();
-                """)
+                INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, \"status\", condition)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                """, (maxID+1, serial_selection, product_selection, manufacturer_selection, label_selection, "Mobile Devices", date_selection, comment_selection, status_selection, condition_selection))
+
+                cur.execute("""
+                INSERT INTO MobileDevice (equip_id,mobile_type,chipset,operating_system,ram,storage,ip_address)
+                VALUES (%s, %s, %s, %s, %s, %s, %s);
+                """, (maxID+1, mobile_type_selection, chipset_selection, os_selection, ram_selection, storage_selection, ip_selection))
 
                 conn.commit()
                 st.success("Item sucessfully added.")
+                st.session_state['add_edit_remove'] = 0
                 time.sleep(1)
                 st.rerun()
             except Exception as err:
