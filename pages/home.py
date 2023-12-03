@@ -177,6 +177,218 @@ def display_mobile_device_entry():
                 print_psycopg2_exception(err)
                 conn.rollback()
             
+def display_camera_entry(): # equip_id,camera_type,resolution,megapixels,sd_card
+
+    col1, col2 = st.columns([1,1])
+
+    serial_selection = col1.text_input('Serial Number', max_chars=255) ###
+    product_selection = col1.text_input('Product Name', max_chars=255) ###
+    manufacturer_selection = col1.text_input('Manufacturer', max_chars=255) ###
+    label_selection = col1.text_input('Label', max_chars=255)
+    date_selection = col2.date_input('Purchase Date', format="MM/DD/YYYY", value=None) ###
+    comment_selection = col2.text_input('Comments', max_chars=1023)
+    status_selection = col2.selectbox('Status', ('Available', 'Unavailable'), index=None, placeholder="Select from dropdown...") ###
+    condition_selection = col2.selectbox('Condition', ('Good', 'Issues', 'Broken'), index=None, placeholder="Select from dropdown...") ###
+
+    camera_type_selection = col1.selectbox('Camera Type', ('DSLR', 'Mirrorless', 'Point and Shoot', 'Action', '360', 'Drone', 'Other'), index=None, placeholder="Select from dropdown...") ###
+    resolution = col1.text_input('Resolution', max_chars=255)
+    megapixels = col2.number_input('Megapixels', min_value=1, value=None, step=1)
+    sd_card = col2.text_input('SD Storage Size', max_chars=255)
+
+    if st.button('Submit'):
+        if not (serial_selection != "" and product_selection != "" and manufacturer_selection != "" and label_selection != "" and date_selection != None and comment_selection != "" and status_selection != None and condition_selection != None and camera_type_selection != None and resolution != "" and megapixels != "" and sd_card != ""):
+            st.error("One or more required fields are not filled in.")
+        else:
+            try:
+                cur.execute("SELECT MAX(equip_id) FROM Equipment;")
+                maxID = cur.fetchall()[0][0]
+                
+                cur.execute("""
+                INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, \"status\", condition)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                """, (maxID+1, serial_selection, product_selection, manufacturer_selection, label_selection, "Camera", date_selection, comment_selection, status_selection, condition_selection))
+
+                cur.execute("""
+                INSERT INTO Camera (equip_id,camera_type,resolution,megapixels,sd_card)
+                VALUES (%s, %s, %s, %s, %s);
+                """, (maxID+1, camera_type_selection, resolution, megapixels, sd_card))
+
+                conn.commit()
+                st.success("Item sucessfully added.")
+                st.session_state['add_edit_remove'] = 0
+                time.sleep(1)
+                st.rerun()
+            except Exception as err:
+                print_psycopg2_exception(err)
+                conn.rollback()
+
+def display_computer_entry():
+    col1, col2 = st.columns([1,1])
+
+    serial_selection = col1.text_input('Serial Number', max_chars=255) ###
+    product_selection = col1.text_input('Product Name', max_chars=255) ###
+    manufacturer_selection = col1.text_input('Manufacturer', max_chars=255) ###
+    label_selection = col1.text_input('Label', max_chars=255)
+    date_selection = col2.date_input('Purchase Date', format="MM/DD/YYYY", value=None) ###
+    comment_selection = col2.text_input('Comments', max_chars=1023)
+    status_selection = col2.selectbox('Status', ('Available', 'Unavailable'), index=None, placeholder="Select from dropdown...") ###
+    condition_selection = col2.selectbox('Condition', ('Good', 'Issues', 'Broken'), index=None, placeholder="Select from dropdown...") ###
+
+    computer_type = col1.selectbox('Computer Type', ('Desktop', 'Laptop', 'Server', 'Mainframe', 'Other'), index=None, placeholder="Select from dropdown...") ###
+    cpu = col1.text_input('CPU', max_chars=255)
+    gpu = col1.text_input('GPU', max_chars=255)
+    ram = col1.text_input('RAM', max_chars=255)
+    storage = col1.text_input('Storage Size', max_chars=255)
+    hostname = col2.text_input('Host Name', max_chars=255)
+    os = col2.text_input('Operating System', max_chars=255)
+    local_admin = col2.text_input('Local Admin', max_chars=255)
+    ip = col2.text_input('IP Address', max_chars=45)
+
+    if st.button('Submit'):
+        if not (serial_selection != "" and product_selection != "" and manufacturer_selection != "" and label_selection != "" and date_selection != None and comment_selection != "" and status_selection != None and condition_selection != None and computer_type != None and cpu != "" and gpu != "" and ram != "" and storage != "" and hostname != "" and os != "" and local_admin != "" and ip != ""):
+            st.error("One or more required fields are not filled in.")
+        else:
+            try:
+                cur.execute("SELECT MAX(equip_id) FROM Equipment;")
+                maxID = cur.fetchall()[0][0]
+                
+                cur.execute("""
+                INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, \"status\", condition)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                """, (maxID+1, serial_selection, product_selection, manufacturer_selection, label_selection, "Computer", date_selection, comment_selection, status_selection, condition_selection))
+
+                cur.execute("""
+                INSERT INTO Computer (equip_id,computer_type,cpu,gpu,ram,storage,hostname,operating_system,local_admin,ip_address)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                """, (maxID+1, computer_type, cpu, gpu, ram, storage, hostname, os, local_admin, ip))
+
+                conn.commit()
+                st.success("Item sucessfully added.")
+                st.session_state['add_edit_remove'] = 0
+                time.sleep(1)
+                st.rerun()
+            except Exception as err:
+                print_psycopg2_exception(err)
+                conn.rollback()
+
+def display_fpga_entry(): # equip_id,board_type,storage
+    col1, col2 = st.columns([1,1])
+
+    serial_selection = col1.text_input('Serial Number', max_chars=255) ###
+    product_selection = col1.text_input('Product Name', max_chars=255) ###
+    manufacturer_selection = col1.text_input('Manufacturer', max_chars=255) ###
+    label_selection = col1.text_input('Label', max_chars=255)
+    date_selection = col2.date_input('Purchase Date', format="MM/DD/YYYY", value=None) ###
+    comment_selection = col2.text_input('Comments', max_chars=1023)
+    status_selection = col2.selectbox('Status', ('Available', 'Unavailable'), index=None, placeholder="Select from dropdown...") ###
+    condition_selection = col2.selectbox('Condition', ('Good', 'Issues', 'Broken'), index=None, placeholder="Select from dropdown...") ###
+
+    board_type = col1.selectbox('Board Type', ('FPGA', 'Microcontroller', 'Other'), index=None, placeholder="Select from dropdown...") ###
+    storage = col2.text_input('Storage Size', max_chars=255)
+
+    if st.button('Submit'):
+        if not (serial_selection != "" and product_selection != "" and manufacturer_selection != "" and label_selection != "" and date_selection != None and comment_selection != "" and status_selection != None and condition_selection != None and board_type != None and storage != ""):
+            st.error("One or more required fields are not filled in.")
+        else:
+            try:
+                cur.execute("SELECT MAX(equip_id) FROM Equipment;")
+                maxID = cur.fetchall()[0][0]
+                
+                cur.execute("""
+                INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, \"status\", condition)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                """, (maxID+1, serial_selection, product_selection, manufacturer_selection, label_selection, "FPGA Board", date_selection, comment_selection, status_selection, condition_selection))
+
+                cur.execute("""
+                INSERT INTO FPGADeviceBoard (equip_id,board_type,storage)
+                VALUES (%s, %s, %s);
+                """, (maxID+1, board_type, storage))
+
+                conn.commit()
+                st.success("Item sucessfully added.")
+                st.session_state['add_edit_remove'] = 0
+                time.sleep(1)
+                st.rerun()
+            except Exception as err:
+                print_psycopg2_exception(err)
+                conn.rollback()
+
+def display_vrar_entry(): # equip_id,storage
+
+    col1, col2 = st.columns([1,1])
+
+    serial_selection = col1.text_input('Serial Number', max_chars=255) ###
+    product_selection = col1.text_input('Product Name', max_chars=255) ###
+    manufacturer_selection = col1.text_input('Manufacturer', max_chars=255) ###
+    label_selection = col1.text_input('Label', max_chars=255)
+    date_selection = col2.date_input('Purchase Date', format="MM/DD/YYYY", value=None) ###
+    comment_selection = col2.text_input('Comments', max_chars=1023)
+    status_selection = col2.selectbox('Status', ('Available', 'Unavailable'), index=None, placeholder="Select from dropdown...") ###
+    condition_selection = col2.selectbox('Condition', ('Good', 'Issues', 'Broken'), index=None, placeholder="Select from dropdown...") ###
+
+    storage = col1.text_input('Storage Size', max_chars=255)
+
+    if st.button('Submit'):
+        if not (serial_selection != "" and product_selection != "" and manufacturer_selection != "" and label_selection != "" and date_selection != None and comment_selection != "" and status_selection != None and condition_selection != None and storage != ""):
+            st.error("One or more required fields are not filled in.")
+        else:
+            try:
+                cur.execute("SELECT MAX(equip_id) FROM Equipment;")
+                maxID = cur.fetchall()[0][0]
+                
+                cur.execute("""
+                INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, \"status\", condition)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                """, (maxID+1, serial_selection, product_selection, manufacturer_selection, label_selection, "VR/AR Device", date_selection, comment_selection, status_selection, condition_selection))
+
+                cur.execute("""
+                INSERT INTO VRARDevice (equip_id,storage)
+                VALUES (%s, %s);
+                """, (maxID+1, storage))
+
+                conn.commit()
+                st.success("Item sucessfully added.")
+                st.session_state['add_edit_remove'] = 0
+                time.sleep(1)
+                st.rerun()
+            except Exception as err:
+                print_psycopg2_exception(err)
+                conn.rollback()
+
+def display_other_entry():
+
+    col1, col2 = st.columns([1,1])
+
+    serial_selection = col1.text_input('Serial Number', max_chars=255) ###
+    product_selection = col1.text_input('Product Name', max_chars=255) ###
+    manufacturer_selection = col1.text_input('Manufacturer', max_chars=255) ###
+    label_selection = col1.text_input('Label', max_chars=255)
+    date_selection = col2.date_input('Purchase Date', format="MM/DD/YYYY", value=None) ###
+    comment_selection = col2.text_input('Comments', max_chars=1023)
+    status_selection = col2.selectbox('Status', ('Available', 'Unavailable'), index=None, placeholder="Select from dropdown...") ###
+    condition_selection = col2.selectbox('Condition', ('Good', 'Issues', 'Broken'), index=None, placeholder="Select from dropdown...") ###
+
+    if st.button('Submit'):
+        if not (serial_selection != "" and product_selection != "" and manufacturer_selection != "" and label_selection != "" and date_selection != None and comment_selection != "" and status_selection != None and condition_selection != None):
+            st.error("One or more required fields are not filled in.")
+        else:
+            try:
+                cur.execute("SELECT MAX(equip_id) FROM Equipment;")
+                maxID = cur.fetchall()[0][0]
+                
+                cur.execute("""
+                INSERT INTO Equipment (equip_id, serial_number, product_name, manufacturer, label, category, purchase_date, comments, \"status\", condition)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                """, (maxID+1, serial_selection, product_selection, manufacturer_selection, label_selection, "Other", date_selection, comment_selection, status_selection, condition_selection))
+
+                conn.commit()
+                st.success("Item sucessfully added.")
+                st.session_state['add_edit_remove'] = 0
+                time.sleep(1)
+                st.rerun()
+            except Exception as err:
+                print_psycopg2_exception(err)
+                conn.rollback()
 
 def display_add_items():
     selection = st.selectbox('What type of item would you like to add?',
@@ -185,15 +397,15 @@ def display_add_items():
     if selection == "Mobile Device":
         display_mobile_device_entry()
     elif selection == "Camera":
-        pass
+        display_camera_entry()
     elif selection == "Computer":
-        pass
+        display_computer_entry()
     elif selection == "FPGA Board":
-        pass
+        display_fpga_entry()
     elif selection == "VR/AR":
-        pass
+        display_vrar_entry()
     elif selection == "Other":
-        pass
+        display_other_entry()
 
 def display_add_edit_remove_items(value):
     if value == 1:
