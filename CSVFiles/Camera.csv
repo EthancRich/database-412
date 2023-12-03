@@ -1,7 +1,7 @@
 equip_id,camera_type,resolution,megapixels,sd_card
 6,DSLR,4k,12,32GB
 7,Action,8k,20,64GB
-8,Mirrorless,4k`,12,128GB
+8,Mirrorless,4k,12,128GB
 20,Mirrorless,8k,48,32GB
 26,Drone,4k,64,64GB
 32,Point and Shoot,4k,20,128GB

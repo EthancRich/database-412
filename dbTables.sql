@@ -64,7 +64,7 @@ CREATE TABLE MobileDevice(
     storage VARCHAR(255),
     ip_address VARCHAR(45),             --ipv6 is 45 characters and ipv4 is 15 characters
     PRIMARY KEY (equip_id),
-    FOREIGN KEY (equip_id) REFERENCES Equipment (equip_id)
+    FOREIGN KEY (equip_id) REFERENCES Equipment (equip_id) ON DELETE CASCADE
 );
 
 CREATE TYPE camera_types AS ENUM ('DSLR', 'Mirrorless', 'Point and Shoot', 'Action', '360', 'Drone', 'Other');
@@ -76,7 +76,7 @@ CREATE TABLE Camera (
     megapixels INT,
     sd_card VARCHAR(255),
     PRIMARY KEY (equip_id),
-    FOREIGN KEY (equip_id) REFERENCES Equipment(equip_id)
+    FOREIGN KEY (equip_id) REFERENCES Equipment(equip_id) ON DELETE CASCADE
 );
 
 CREATE TYPE computer_types AS ENUM ('Desktop', 'Laptop', 'Server', 'Mainframe', 'Other');
@@ -93,7 +93,7 @@ CREATE TABLE Computer (
     local_admin VARCHAR(255),
     ip_address VARCHAR(45),             --ipv6 is 45 characters and ipv4 is 15 characters
     PRIMARY KEY (equip_id),
-    FOREIGN KEY (equip_id) REFERENCES Equipment(equip_id)
+    FOREIGN KEY (equip_id) REFERENCES Equipment(equip_id) ON DELETE CASCADE
 );
 
 CREATE TYPE board_types AS ENUM ('FPGA', 'Microcontroller', 'Other');
@@ -103,14 +103,14 @@ CREATE TABLE FPGADeviceBoard (
     board_type board_types,
     storage VARCHAR(255),
     PRIMARY KEY (equip_id),
-    FOREIGN KEY (equip_id) REFERENCES Equipment(equip_id)
+    FOREIGN KEY (equip_id) REFERENCES Equipment(equip_id) ON DELETE CASCADE
 );
 
 CREATE TABLE VRARDevice (
     equip_id INT NOT NULL,
     storage VARCHAR(255),
     PRIMARY KEY (equip_id),
-    FOREIGN KEY (equip_id) REFERENCES Equipment(equip_id)
+    FOREIGN KEY (equip_id) REFERENCES Equipment(equip_id) ON DELETE CASCADE
 );
 
 -- \COPY is a psql command line version, and it has to be formatted like the command all on one line, terminated by new lines and not semicolon.
