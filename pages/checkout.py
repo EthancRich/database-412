@@ -13,7 +13,7 @@ import pandas as pd
 def logout():
         for key in st.session_state.keys():
             del st.session_state[key]
-        st.experimental_rerun()
+        st.rerun()
 if st.sidebar.button("Logout"):
         logout()
 
@@ -27,9 +27,9 @@ def connect_to_db():
     conn = psycopg2.connect(
         host="bubble.db.elephantsql.com",
         port="5432",
-        database="ozhptawz",
-        user="ozhptawz",
-        password="rw1e9fAoDhnYmq4D2QKgu51o4g7zS-fJ" #THIS IS UNSAFE. REMOVE THIS IN THE FUTURE.
+        database="aqqphukw",
+        user="aqqphukw",
+        password="LhbOXcM_ZWgawdTaxF3r3uxMdJqhyd1H" #THIS IS UNSAFE. REMOVE THIS IN THE FUTURE.
     )
     return conn
 
@@ -101,7 +101,7 @@ def process_checkout(user_id, selected_equipment_ids, expected_return_date, comm
             conn.commit()
 
     st.success(f"Equipment checked out successfully. Transaction ID: {trans_id}")
-    st.experimental_rerun() # Refresh the page to reflect the updated status
+    st.rerun() # Refresh the page to reflect the updated status
 
 
 def get_next_transaction_id():

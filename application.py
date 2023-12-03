@@ -77,14 +77,14 @@ if not st.session_state['logged_in']:
         st.session_state['user_role'] = user_role
         st.session_state['user_id'] = username #Store the user ID in the session state = global variable
         
-        st.experimental_rerun()
+        st.rerun()
 else:
     
     # Function to handle logout
     def logout():
         for key in st.session_state.keys():
             del st.session_state[key]
-        st.experimental_rerun()
+        st.rerun()
     if st.sidebar.button("Logout"):
         logout()
 
