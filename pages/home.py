@@ -8,9 +8,9 @@ import time
 ###---------- INTIALIZATION ----------###
 
 # Prevent usage if not logged in
-# if not st.session_state.get('logged_in', False):
-#     st.error("You are not logged in.")
-#     st.stop()
+if not st.session_state.get('logged_in', False):
+    st.error("You are not logged in.")
+    st.stop()
 
 # homeview describes the main table being displayed each run.
 #   0 - no table to display.    1 - all table
