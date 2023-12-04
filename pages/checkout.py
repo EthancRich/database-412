@@ -95,8 +95,8 @@ def process_checkout(user_id, selected_equipment_ids, expected_return_date, comm
 
             # Insert into Transaction table
             checkout_date = datetime.date.today() # Current date
-            cur.execute("INSERT INTO Transaction (trans_id, users_id, equipment_items, checkout_date, expected_return_date, comments) VALUES (%s, %s, %s, %s, %s, %s)", 
-                        (trans_id, user_id, selected_equipment_ids, checkout_date, expected_return_date, comments))
+            cur.execute("INSERT INTO Transaction (trans_id, users_id, equipment_items, checkout_date, expected_return_date, actual_return_date, comments) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
+                        (trans_id, user_id, selected_equipment_ids, checkout_date, expected_return_date, datetime.date(datetime.MINYEAR, 1 ,1), comments))
 
             conn.commit()
 
@@ -115,4 +115,3 @@ def get_next_transaction_id():
 
 #Display checkout form
 display_checkout_form()
-display_transaction_table() #TODO: Remove this later
