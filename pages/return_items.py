@@ -9,12 +9,15 @@ if not st.session_state.get('logged_in', False):
     st.error("You are not logged in.")
     st.stop()
 
+if 'has_items' not in st.session_state:
+    st.session_state['has_items'] = 1
+
 def logout():
         for key in st.session_state.keys():
             del st.session_state[key]
         st.experimental_rerun()
 if st.sidebar.button("Logout"):
-        logout()
+    logout()
 
 user_id = st.session_state.get('user_id') #accessing gloabal userID variable from login
 user_name = st.session_state.get('user_name')
@@ -41,6 +44,10 @@ def display_user_equipment_table():
         with conn.cursor() as cur:
             cur.execute("SELECT DISTINCT(Equipment.equip_id), Equipment.product_name, Equipment.manufacturer, Equipment.condition, Equipment.comments, Transaction.checkout_date, Transaction.expected_return_date FROM Transaction, Equipment WHERE Equipment.equip_id=Transaction.equipment_items[1] AND Transaction.users_id=%s AND Transaction.actual_return_date=%s;", (user_id, datetime.date(datetime.MINYEAR, 1, 1),))
             raw_data = cur.fetchall()
+            if raw_data == []:
+                st.session_state['has_items'] = 0
+            else:
+                st.session_state['has_items'] = 1
             column_names = ["Equipment ID", "Equipment Name", "Manufacturer", "Condition", "Comments", "Checkout Date", "Expected Return Date"]
     data_frame = pd.DataFrame(raw_data, columns=column_names)
     st.dataframe(data_frame)  # Or st.table(data_frame)
@@ -97,4 +104,7 @@ def process_return(user_id, selected_equipment_ids, condition, comments):
 
 st.write("Here are your checked out items:")
 display_user_equipment_table() #Display data
-display_return_form() #Display return form
+if st.session_state['has_items']:
+    display_return_form() #Display return form
+else:
+    st.write('You currently have no items checked out!')
