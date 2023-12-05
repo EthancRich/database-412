@@ -1,16 +1,22 @@
+# CSE 412 Database Management System
 # home.py
+# Login process - Neha
+# Item management - Ethan
+
 import streamlit as st
 import psycopg2
 import pandas as pd
 import sys
 import time
 
+#########################################
 ###---------- INTIALIZATION ----------###
+#########################################
 
-# Prevent usage if not logged in
-if not st.session_state.get('logged_in', False):
-    st.error("You are not logged in.")
-    st.stop()
+# Initialize session state for login status
+if 'logged_in' not in st.session_state:
+    st.session_state['logged_in'] = False
+    st.session_state['user_role'] = None
 
 # homeview describes the main table being displayed each run.
 #   0 - no table to display.    1 - all table
@@ -24,9 +30,52 @@ if 'homeview' not in st.session_state:
 if 'add_edit_remove' not in st.session_state:
     st.session_state['add_edit_remove'] = 0
 
+## Write something here
+
 if 'edit_display' not in st.session_state:
     st.session_state['edit_display'] = 0
 
+###########################################
+###---------- LOGIN FUNCTIONS ----------###
+###########################################
+
+def load_users_from_csv(file_path):
+    #Load the CSV file into a pandas dataframe
+    df = pd.read_csv(file_path)
+    users = {row['users_id']: {"password": "123", "role": "student", "name": row['users_name']} for index, row in df.iterrows()}
+    
+    # Add a manual entry for the admin user
+    users['admin'] = {"password": "adminpass", "role": "admin", "name": "Admin User"}
+    return users
+
+users = load_users_from_csv("CSVFiles/Users.csv")
+
+# Function to display centered login form
+def show_login_form():
+    # Empty space for vertical centering
+    for _ in range(10):
+        st.write("")
+
+    # Centering the login form horizontally
+    col1, col2, col3 = st.columns([1,2,1])
+    with col2:  # Middle column
+        st.write("## Login")
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        user_type = st.radio("Select your role:", ("Admin", "Student"))
+        if st.button("Login"):
+            return username, password, user_type
+    return None, None, None
+
+# Function to check user credentials
+def check_credentials(username, password, user_type):
+    user_info = users.get(username)
+    if user_info and user_info["password"] == password and user_info["role"] == user_type.lower():
+        st.session_state['user_name'] = user_info["name"] #Store the user name in the session state = global variable
+        return user_info["role"]
+    else:
+        st.error("The username or password you entered is incorrect.")
+        return None
 
 ###---------- DB CONNECTIVITY ----------###
 
@@ -57,10 +106,6 @@ def print_psycopg2_exception(err):
 
     # psycopg2 extensions.Diagnostics object attribute
     print ("\nextensions.Diagnostics:", err)
-
-    # print the pgcode and pgerror exceptions
-    # print ("pgerror:", err.pgerror)
-    # print ("pgcode:", err.pgcode, "\n")
 
 # Actually start up the cursor for the queries
 conn = connect_to_db()
@@ -826,16 +871,21 @@ def display_edit_items():
 
 def display_add_edit_remove_items(value):
     if value == 1:
+        st.write("#### Add Item")
         display_add_items()
     elif value == 2:
+        st.write("#### Edit Item")
         display_edit_items()
     elif value == 3:
+        st.write("#### Remove Item")
         display_remove_items()
     elif value == 4:
+        st.write("#### More Item Info")
         display_info_items()
 
 def display_home_table(value):
     if value == 1:
+        st.write("Displaying All Items:")
         display_all_table()
 
         if st.session_state['user_role'] == "admin":
@@ -853,10 +903,13 @@ def display_home_table(value):
             display_add_edit_remove_items(st.session_state['add_edit_remove'])
         
     elif value == 2:
+        st.write("Displaying Checked Out Items:")
         display_out_table()
     elif value == 3:
+        st.write("Displaying Available Items:")
         display_in_table()
     elif value == 4:
+        st.write("Displaying Transaction History:")
         display_hist_table()
 
 def logout():
@@ -864,33 +917,47 @@ def logout():
         del st.session_state[key]
     st.rerun()
 
-###--------------------- DRAWING THE PAGE ---------------------###
+user_name = st.session_state.get('user_name')
 
-st.title("Home Page")
-st.write("Welcome to the Lab Equipment Inventory System!")
+##################################################################
+###--------------------- APPLICATION MAIN ---------------------###
+##################################################################
 
-col1, col2, col3, col4 = st.columns([0.9,1.15,0.95,3])
+if not st.session_state['logged_in']:
+    username, password, user_type = show_login_form()
+    user_role = check_credentials(username, password, user_type)
+    if user_role:
+        st.session_state['logged_in'] = True
+        st.session_state['user_role'] = user_role
+        st.session_state['user_id'] = username #Store the user ID in the session state = global variable
+        
+        st.rerun()
+else:
+    st.title("Inventory")
+    st.write(f"Hi {user_name}, browse our inventory for devices.")
 
-if st.sidebar.button("Logout"):
-    logout()
+    col1, col2, col3, col4 = st.columns([0.9,1.15,0.95,3])
 
-if col1.button('All Items'):
-    st.session_state['homeview'] = 1
-    st.session_state['add_edit_remove'] = 0
+    if st.sidebar.button("Logout"):
+        logout()
 
-if col2.button('Checked Out'):
-    st.session_state['homeview'] = 2
-    st.session_state['add_edit_remove'] = 0
-
-if col3.button('Available'):
-    st.session_state['homeview'] = 3
-    st.session_state['add_edit_remove'] = 0
-
-if col4.button('Transaction History'):
-    if st.session_state['user_role'] == "admin":
-        st.session_state['homeview'] = 4
+    if col1.button('All Items'):
+        st.session_state['homeview'] = 1
         st.session_state['add_edit_remove'] = 0
-    else:
-        st.error("You do not have the privileges to view this content.")
 
-display_home_table(st.session_state['homeview'])
+    if col2.button('Checked Out'):
+        st.session_state['homeview'] = 2
+        st.session_state['add_edit_remove'] = 0
+
+    if col3.button('Available'):
+        st.session_state['homeview'] = 3
+        st.session_state['add_edit_remove'] = 0
+
+    if col4.button('Transaction History'):
+        if st.session_state['user_role'] == "admin":
+            st.session_state['homeview'] = 4
+            st.session_state['add_edit_remove'] = 0
+        else:
+            st.error("You do not have the privileges to view this content.")
+
+    display_home_table(st.session_state['homeview'])

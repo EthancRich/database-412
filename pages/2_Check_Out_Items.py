@@ -3,24 +3,25 @@ import datetime
 import streamlit as st
 import psycopg2
 import pandas as pd
+import time
 
 #if not logged in dont show anything
-#if not st.session_state.get('logged_in', False):
- #   st.error("You are not logged in.")
- #   st.stop()
+if not st.session_state.get('logged_in', False):
+   st.error("You are not logged in.")
+   st.stop()
 
 #display logout button
 def logout():
         for key in st.session_state.keys():
             del st.session_state[key]
         st.rerun()
+        
 if st.sidebar.button("Logout"):
         logout()
 
 #titles
 user_name = st.session_state.get('user_name')
-st.title(f"Hi {user_name}, Check Out Items")   
-
+st.title("Check Out Items")   
 
 def connect_to_db():
     #Connect to database and close connection on demand
@@ -43,7 +44,7 @@ def display_equipment_table():
     data_frame = pd.DataFrame(raw_data, columns=column_names)
     st.dataframe(data_frame)  # Or st.table(data_frame)
 
-st.write("Here are the available items:")
+st.write(f"Hi {user_name}, Here are the available items:")
 display_equipment_table() #Display data
 
 
@@ -78,12 +79,12 @@ def display_checkout_form():
     if st.button("Checkout"):
         if selected_id and user_id:
             process_checkout(user_id, [selected_id], expected_return_date, comments)
+            time.sleep(2)
+            st.rerun() # Refresh the page to reflect the updated status
         else:
             st.error("Please enter the required information.")
 
-
-
-def process_checkout(user_id, selected_equipment_ids, expected_return_date, comments=""):
+def process_checkout(user_id, selected_equipment_ids, expected_return_date, comments):
     #Changes the status of the equipment to "Unavailable" and adds a new row to the Transaction table
     trans_id = get_next_transaction_id() 
 
@@ -96,13 +97,11 @@ def process_checkout(user_id, selected_equipment_ids, expected_return_date, comm
             # Insert into Transaction table
             checkout_date = datetime.date.today() # Current date
             cur.execute("INSERT INTO Transaction (trans_id, users_id, equipment_items, checkout_date, expected_return_date, actual_return_date, comments) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
-                        (trans_id, user_id, selected_equipment_ids, checkout_date, expected_return_date, datetime.date(datetime.MINYEAR, 1 ,1), comments))
+                        (trans_id, user_id, selected_equipment_ids, checkout_date, expected_return_date, datetime.date(datetime.MINYEAR, 1 ,1), comments,))
 
             conn.commit()
 
     st.success(f"Equipment checked out successfully. Transaction ID: {trans_id}")
-    st.rerun() # Refresh the page to reflect the updated status
-
 
 def get_next_transaction_id():
     #function to get the next transaction ID from the database
@@ -111,7 +110,6 @@ def get_next_transaction_id():
             cur.execute("SELECT MAX(trans_id) FROM Transaction")
             max_id = cur.fetchone()[0]
             return max_id + 1 if max_id is not None else 1
-
 
 #Display checkout form
 display_checkout_form()

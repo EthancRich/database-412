@@ -15,7 +15,7 @@ if 'has_items' not in st.session_state:
 def logout():
         for key in st.session_state.keys():
             del st.session_state[key]
-        st.experimental_rerun()
+        st.rerun()
 if st.sidebar.button("Logout"):
     logout()
 
@@ -23,10 +23,7 @@ user_id = st.session_state.get('user_id') #accessing gloabal userID variable fro
 user_name = st.session_state.get('user_name')
 
 st.title("Return Items")
-st.write("This page allows you to return borrowed items.")
 
-
-#TO DO: Add functionalities to list borrowed items and manage returns
 def connect_to_db():
     #Connect to database and close connection on demand
     conn = psycopg2.connect(
@@ -84,8 +81,6 @@ def display_return_form():
         else:
             st.error("Please enter the required information.")
 
-
-
 def process_return(user_id, selected_equipment_ids, condition, comments):
     #Changes the status of the equipment to "Available" and updates row in the Transaction table
     actual_return_date = datetime.date.today() # Current date
@@ -102,7 +97,7 @@ def process_return(user_id, selected_equipment_ids, condition, comments):
     st.success(f"Equipment returned successfully.")
     st.rerun() # Refresh the page to reflect the updated status
 
-st.write("Here are your checked out items:")
+st.write(f"Hi {user_name}, Here are your checked out items:")
 display_user_equipment_table() #Display data
 if st.session_state['has_items']:
     display_return_form() #Display return form

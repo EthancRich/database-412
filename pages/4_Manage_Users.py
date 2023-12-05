@@ -12,9 +12,9 @@ if not st.session_state.get('logged_in', False):
 def logout():
         for key in st.session_state.keys():
             del st.session_state[key]
-        st.experimental_rerun()
+        st.rerun()
 if st.sidebar.button("Logout"):
-        logout()
+    logout()
 
 user_id = st.session_state.get('user_id') #accessing gloabal userID variable from login
 user_name = st.session_state.get('user_name')
@@ -97,4 +97,4 @@ if user_role == 'admin':
     display_user_deletion_form()
     
 else:
-    st.title("You do not have access to this page.")
+    st.error("You do not have access to this page.")
